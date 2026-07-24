@@ -47,7 +47,7 @@ O MVP foca no **ciclo diário essencial de estudos** (Executar $\rightarrow$ Reg
 
 ## 🛠️ Arquitetura Técnica & Stack
 
-* **Core:** [React 18](https://react.dev/) + [Vite](https://vitejs.dev/)
+* **Core:** [React 18](https://react.dev/) + [Vite]( https://vitejs.dev/)
 * **Linguagem:** JavaScript (ES6+)
 * **Estilização:** CSS Customizado (CSS-in-JS + Flexbox / CSS Grid / Scrollbar estilizada)
 * **Ícones:** [Lucide React](https://lucide.dev/)

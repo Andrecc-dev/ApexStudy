@@ -136,12 +136,17 @@ export default function App() {
     setCronograma(novo);
   };
 
-  const deletarTarefa = (id, e) => {
-    e.stopPropagation();
+const deletarTarefa = (id, e) => {
+  e.stopPropagation(); // Evita marcar/desmarcar a tarefa ao clicar no lixo
+  
+  const confirmar = window.confirm('Tem certeza de que deseja excluir esta matéria?');
+  
+  if (confirmar) {
     const novo = { ...cronograma };
     novo[diaAtual] = novo[diaAtual].filter((item) => item.id !== id);
     setCronograma(novo);
-  };
+  }
+};
 
   const adicionarTarefa = (e) => {
     e.preventDefault();
