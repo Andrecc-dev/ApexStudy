@@ -1,3 +1,58 @@
+/* RESET BÁSICO */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* ===================================================
+   TEMA ESCURO (PADRÃO)
+   =================================================== */
+[data-theme='dark'] {
+  --bg-primary: #0f172a;
+  --bg-secondary: #1e293b;
+  --bg-card: #1e293b;
+  --border-color: #334155;
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --accent-color: #2563eb;
+  --accent-hover: #1d4ed8;
+  --accent-text: #60a5fa;
+}
+
+/* ===================================================
+   TEMA CLARO
+   =================================================== */
+[data-theme='light'] {
+  --bg-primary: #f8fafc;
+  --bg-secondary: #ffffff;
+  --bg-card: #ffffff;
+  --border-color: #cbd5e1;
+  --text-primary: #0f172a;
+  --text-secondary: #64748b;
+  --accent-color: #2563eb;
+  --accent-hover: #1d4ed8;
+  --accent-text: #1d4ed8;
+}
+
+/* ===================================================
+   TEMA ALTO CONTRASTE (ACESSIBILIDADE)
+   =================================================== */
+[data-theme='high-contrast'] {
+  --bg-primary: #000000;
+  --bg-secondary: #000000;
+  --bg-card: #000000;
+  --border-color: #ffffff;
+  --text-primary: #ffffff;
+  --text-secondary: #ffff00; /* Amarelo de Alto Contraste */
+  --accent-color: #ffff00;
+  --accent-hover: #e6e600;
+  --accent-text: #ffff00;
+}
+
 * {
   margin: 0;
   padding: 0;
