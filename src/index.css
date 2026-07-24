@@ -1,0 +1,45 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+body {
+  background-color: #0f172a;
+  color: #f8fafc;
+  padding: 16px;
+}
+
+/* Responsividade: ajusta o padding no computador */
+@media (min-width: 640px) {
+  body {
+    padding: 32px 16px;
+  }
+}
+
+/* 🎨 BARRA DE ROLAGEM CUSTOMIZADA E BONITA (Webkit/Chrome/Edge/Safari) */
+::-webkit-scrollbar {
+  height: 6px; /* Altura da barra horizontal */
+  width: 6px;  /* Largura da barra vertical */
+}
+
+::-webkit-scrollbar-track {
+  background: #1e293b; /* Fundo do trilho */
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #3b82f6; /* Cor da barrinha (Azul) */
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #2563eb; /* Cor ao passar o mouse */
+}
+
+/* Estilização para o Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #3b82f6 #1e293b;
+}
