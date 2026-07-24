@@ -29,6 +29,20 @@ const rotinaInicial = {
 };
 
 export default function App() {
+
+  // Dentro do componente App():
+
+// Estado da Escala da Fonte (Padrão: 100%)
+const [escalaFonte, setEscalaFonte] = useState(() => {
+  return Number(localStorage.getItem('apexstudy_fonte')) || 100;
+});
+
+// Aplica a escala no elemento raiz <html style="font-size: 110%">
+useEffect(() => {
+  document.documentElement.style.fontSize = `${escalaFonte}%`;
+  localStorage.setItem('apexstudy_fonte', escalaFonte);
+}, [escalaFonte]);
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isTutorialOpen, setIsTutorialOpen] = useState(false);
   const [abaAtiva, setAbaAtiva] = useState('rotina'); // 'rotina' ou 'questoes'
@@ -147,6 +161,8 @@ export default function App() {
         abrirTutorial={() => setIsTutorialOpen(true)}
         temaAtual={tema}
         setTemaAtual={setTema}
+        escalaFonte={escalaFonte}
+        setEscalaFonte={setEscalaFonte}
       />
 
       <main style={{ maxWidth: '500px', margin: '0 auto', padding: '16px' }}>
