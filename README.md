@@ -6,53 +6,61 @@
 
 ## 📄 Visão Geral do Produto
 
-O **ApexStudy Axios** é um sistema de gerenciamento de estudos de alta performance projetado para transformar rotinas complexas em jornadas visuais e motivadoras. 
+O **ApexStudy Axios** é um sistema de gerenciamento de estudos de alta performance projetado para transformar rotinas complexas em jornadas visuais e motivadoras.
 
-Desenvolvido com foco **Mobile-First**, a plataforma elimina a fricção do uso de planilhas e cadernos, entregando uma interface limpa, fluida e adaptável para estudantes do ENEM, vestibulares, concursos e rotinas acadêmicas.
+Desenvolvido com foco **Mobile-First**, a plataforma elimina a fricção de planilhas e cadernos, entregando uma interface *Dark Mode* limpa, fluida e acessível tanto no celular quanto no computador.
 
 ---
 
 ## 🎯 Pilares de Design & UX
 
-* ⚡ **Simplicidade Operacional:** Ações principais executáveis em poucos cliques.
-* 📱 **Mobile-First Real:** Projetado para navegação rápida e confortável na tela do celular.
-* ⚙️ **Flexibilidade Guiada:** Pré-configurado para a rotina do ENEM, mas 100% customizável para qualquer objetivo.
-* 📈 **Sensação de Avanço:** Feedback visual imediato ao concluir cada bloco de estudo.
+* ⚡ **Simplicidade Operacional:** Ações principais executáveis com apenas um toque ou clique.
+* 📱 **Mobile-First Real:** Projetado para a tela do celular, adaptando-se perfeitamente a desktops.
+* 🔔 **Feedback Sensorial:** Alarme sonoro integrado e alertas visuais ao finalizar os blocos de estudo.
+* ⚙️ **Flexibilidade Guiada:** Pré-configurado para o ENEM/Vestibulares, mas 100% customizável para qualquer objetivo.
+* 📈 **Sensação de Avanço:** Métricas diárias de tempo acumulado e blocos concluídos em tempo real.
 
 ---
 
-## 🚀 Especificação do MVP (Fase 1)
+## 🚀 Funcionalidades do MVP (Fase 1)
 
 O MVP foca no **ciclo diário essencial de estudos** (Executar $\rightarrow$ Registrar $\rightarrow$ Acompanhar):
 
-### 1. Dashboard Diário ("Hoje")
-* **Exibição Dinâmica:** Identificação automática das matérias programadas para o dia da semana.
-* **Timer Focado:** Blocos de estudo de 50 minutos com acompanhamento visual.
-* **Status de Conclusão:** Checkbox de tarefas diárias com indicadores visuais de progresso.
+### 1. Dashboard & Cronômetro de Foco
+* **Timer Ajustável:** Contagem regressiva para blocos de estudo (padrão 50 min) com atalhos de $\pm 5\text{ min}$.
+* **Alarme Sonoro Nativo:** Bipe de conclusão gerado via áudio nativo do navegador ao zerar o tempo.
+* **Barra de Progresso Dinâmica:** Porcentagem do dia calculada automaticamente conforme as tarefas são marcadas.
 
-### 2. Gerenciador de Cronograma
-* **Matriz Semanal:** Planejamento completo de Segunda a Domingo.
-* **Modelo Padrão ENEM:** Pré-carregado com a rotina base (blocos de 50 min, revisões de fim de semana e descanso planejado).
-* **Edição Livre:** Permite alterar matérias, tempos e sequências a qualquer momento.
+### 2. Gerenciador de Cronograma Semanal
+* **Navegação por Dias:** Filtro rápido de Segunda a Domingo com barra de rolagem customizada.
+* **Seletor de Data Integrado:** Sincronização automática do dia da semana ao escolher qualquer data no calendário.
+* **Edição & Persistência:** Adição e remoção de tarefas em tempo real com salvamento local automático.
 
-### 3. Gestão de Matérias
-* **Catálogo de Disciplinas:** Organização visual por cores e temas.
-* **Contador de Blocos:** Rastreamento do volume de estudo acumulado por matéria.
+### 3. Gestão Visual de Matérias & Métricas
+* **Identificação por Cores:** Codificação visual para Matemática, Português, Redação, Ciências da Natureza, Humanas e Revisões.
+* **Painel de Desempenho:** Rastreamento contínuo do total de blocos concluídos e horas líquidas estudadas.
+
+### 4. Suporte PWA (Progressive Web App)
+* **Instalação Simplificada:** Botão inteligente no topo para instalar o app direto na tela inicial do celular ou desktop.
 
 ---
 
 ## 🛠️ Arquitetura Técnica & Stack
 
-* **Frontend:** React + Vite
-* **Estilização:** Tailwind CSS
-* **Ícones:** Lucide React
-* **Persistência de Dados:** LocalStorage (Fase inicial local)
-* **Deploy & CI/CD:** Vercel
+* **Core:** [React 18](https://react.dev/) + [Vite](https://vitejs.dev/)
+* **Linguagem:** JavaScript (ES6+)
+* **Estilização:** CSS Customizado (CSS-in-JS + Flexbox / CSS Grid / Scrollbar estilizada)
+* **Ícones:** [Lucide React](https://lucide.dev/)
+* **Som:** Web Audio API (Sintetizador nativo sem arquivos de áudio externos)
+* **Persistência de Dados:** `LocalStorage` do navegador
+* **Deploy & CI/CD:** [Vercel](https://vercel.com/)
 
 ---
 
 ## 🛣️ Roadmap de Evolução
+
 [ MVP - Fase 1 ] ────────► [ Fase 2 ] ──────────────► [ Fase 3 ]
 • Rotina Diária            • Banco de Questões        • Sistema de Conquistas
 • Cronograma Adaptável     • Registro de Simulados    • Exportação de Relatórios
-• Timer de 50 min          • Sistema de Revisões      • Sincronização em Nuvem
+• Timer com Alarme         • Sistema de Revisões      • Sincronização em Nuvem
+• Suporte PWA / Celular    • Gráficos Mensais         • Timer Pomodoro Configurável
