@@ -1,5 +1,7 @@
+// src/components/Sidebar.jsx
+
 import React, { useState, useEffect } from 'react';
-import { X, Calendar, Target, HelpCircle, Moon, Sun, Eye, ZoomIn, ZoomOut } from 'lucide-react';
+import { X, Calendar, Target, FileText, HelpCircle, Moon, Sun, Eye } from 'lucide-react';
 
 export default function Sidebar({ 
   isOpen, 
@@ -9,8 +11,8 @@ export default function Sidebar({
   abrirTutorial,
   temaAtual,
   setTemaAtual,
-  escalaFonte,        // <-- Nova Prop
-  setEscalaFonte      // <-- Nova Prop
+  escalaFonte,
+  setEscalaFonte
 }) {
   const [shouldRender, setShouldRender] = useState(isOpen);
 
@@ -133,6 +135,27 @@ export default function Sidebar({
             }}
           >
             <Target size={18} /> Banco de Questões
+          </button>
+
+          {/* NOVO ITEM: REGISTRO DE SIMULADOS */}
+          <button
+            onClick={() => navegarPara('simulados')}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '12px',
+              padding: '10px 12px',
+              borderRadius: '8px',
+              border: 'none',
+              backgroundColor: abaAtiva === 'simulados' ? 'var(--accent-color, #2563eb)' : 'transparent',
+              color: abaAtiva === 'simulados' ? '#fff' : 'var(--text-primary, #cbd5e1)',
+              fontWeight: '500',
+              fontSize: '0.9rem',
+              cursor: 'pointer',
+              textAlign: 'left'
+            }}
+          >
+            <FileText size={18} /> Registro de Simulados
           </button>
         </nav>
 

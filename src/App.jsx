@@ -8,6 +8,7 @@ import {
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 import BancoQuestoes from './components/BancoQuestoes';
+import RegistroSimulados from './components/RegistroSimulados'; // <-- IMPORTADO AQUI
 
 const DIAS = ['Domingo', 'Segunda', 'Terca', 'Quarta', 'Quinta', 'Sexta', 'Sabado'];
 
@@ -30,22 +31,20 @@ const rotinaInicial = {
 
 export default function App() {
 
-  // Dentro do componente App():
+  // Estado da Escala da Fonte (Padrão: 100%)
+  const [escalaFonte, setEscalaFonte] = useState(() => {
+    return Number(localStorage.getItem('apexstudy_fonte')) || 100;
+  });
 
-// Estado da Escala da Fonte (Padrão: 100%)
-const [escalaFonte, setEscalaFonte] = useState(() => {
-  return Number(localStorage.getItem('apexstudy_fonte')) || 100;
-});
-
-// Aplica a escala no elemento raiz <html style="font-size: 110%">
-useEffect(() => {
-  document.documentElement.style.fontSize = `${escalaFonte}%`;
-  localStorage.setItem('apexstudy_fonte', escalaFonte);
-}, [escalaFonte]);
+  // Aplica a escala no elemento raiz <html style="font-size: 110%">
+  useEffect(() => {
+    document.documentElement.style.fontSize = `${escalaFonte}%`;
+    localStorage.setItem('apexstudy_fonte', escalaFonte);
+  }, [escalaFonte]);
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isTutorialOpen, setIsTutorialOpen] = useState(false);
-  const [abaAtiva, setAbaAtiva] = useState('rotina'); // 'rotina' ou 'questoes'
+  const [abaAtiva, setAbaAtiva] = useState('rotina'); // 'rotina', 'questoes' ou 'simulados'
 
   // Gestão de Tema (dark, light, high-contrast)
   const [tema, setTema] = useState(() => localStorage.getItem('apexstudy_tema') || 'dark');
@@ -165,7 +164,8 @@ useEffect(() => {
         setEscalaFonte={setEscalaFonte}
       />
 
-      <main style={{ maxWidth: '500px', margin: '0 auto', padding: '16px' }}>
+      {/* Ajustado o maxWidth para 900px para comportar melhor o painel dos simulados */}
+      <main style={{ maxWidth: '900px', margin: '0 auto', padding: '16px' }}>
         
         {/* Banner PWA */}
         <div style={{ backgroundColor: 'var(--accent-color, #2563eb)', color: '#fff', padding: '8px 12px', borderRadius: '8px', marginBottom: '14px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.8rem' }}>
@@ -177,7 +177,8 @@ useEffect(() => {
 
         {mostrarAjudaInstalacao && <AjudaInstalacaoModal onClose={() => setMostrarAjudaInstalacao(false)} />}
 
-        {abaAtiva === 'rotina' ? (
+        {/* NAVEGAÇÃO DE ABAS */}
+        {abaAtiva === 'rotina' && (
           <>
             {/* Header Data */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
@@ -309,9 +310,12 @@ useEffect(() => {
               )}
             </div>
           </>
-        ) : (
-          <BancoQuestoes />
         )}
+
+        {abaAtiva === 'questoes' && <BancoQuestoes />}
+
+        {abaAtiva === 'simulados' && <RegistroSimulados />}
+
       </main>
 
       {/* Modal de Tutorial */}
@@ -343,11 +347,19 @@ function CentralDuvidasModal({ abaAtiva, onClose }) {
           <h3 style={{ margin: 0, color: 'var(--accent-text, #60a5fa)', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '1rem' }}><HelpCircle size={20} /> Como usar esse módulo?</h3>
           <button onClick={onClose} style={{ backgroundColor: 'transparent', border: 'none', color: 'var(--text-secondary, #94a3b8)', cursor: 'pointer' }}><X size={18} /></button>
         </div>
-        {abaAtiva === 'questoes' ? (
+        
+        {abaAtiva === 'questoes' && (
           <p style={{ fontSize: '0.85rem', color: 'var(--text-primary, #cbd5e1)' }}>Cadastre suas resoluções de questões por matéria. O ApexStudy calcula sua taxa de acertos e identifica onde você precisa focar mais!</p>
-        ) : (
+        )}
+        
+        {abaAtiva === 'rotina' && (
           <p style={{ fontSize: '0.85rem', color: 'var(--text-primary, #cbd5e1)' }}>Organize seu cronograma semanal, controle o tempo com o timer Pomodoro e acompanhe seu progresso de estudo por dia.</p>
         )}
+
+        {abaAtiva === 'simulados' && (
+          <p style={{ fontSize: '0.85rem', color: 'var(--text-primary, #cbd5e1)' }}>Registre seus simulados prestados, escolha provas oficiais ou crie modelos customizados de cursinhos e acompanhe o aproveitamento detalhado por matéria.</p>
+        )}
+
         <button onClick={onClose} style={{ width: '100%', padding: '8px', borderRadius: '6px', border: 'none', backgroundColor: 'var(--accent-color, #2563eb)', color: '#fff', fontWeight: 'bold', marginTop: '12px', cursor: 'pointer' }}>Entendi</button>
       </div>
     </div>
