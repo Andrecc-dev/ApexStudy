@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { 
   Play, Pause, RotateCcw, CheckCircle2, Circle, BookOpen, Clock, 
   Plus, Trash2, Calendar as CalendarIcon, Award, Flame, BellRing, 
-  Download, HelpCircle, X, Target 
+  Download, HelpCircle, X, Target, RefreshCw 
 } from 'lucide-react';
 
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 import BancoQuestoes from './components/BancoQuestoes';
-import RegistroSimulados from './components/RegistroSimulados'; // <-- IMPORTADO AQUI
+import RegistroSimulados from './components/RegistroSimulados';
+import SistemaRevisoes from './components/SistemaRevisoes'; // <-- IMPORTADO AQUI
 
 const DIAS = ['Domingo', 'Segunda', 'Terca', 'Quarta', 'Quinta', 'Sexta', 'Sabado'];
 
@@ -44,7 +45,7 @@ export default function App() {
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isTutorialOpen, setIsTutorialOpen] = useState(false);
-  const [abaAtiva, setAbaAtiva] = useState('rotina'); // 'rotina', 'questoes' ou 'simulados'
+  const [abaAtiva, setAbaAtiva] = useState('rotina'); // 'rotina', 'questoes', 'simulados' ou 'revisoes'
 
   // Gestão de Tema (dark, light, high-contrast)
   const [tema, setTema] = useState(() => localStorage.getItem('apexstudy_tema') || 'dark');
@@ -164,7 +165,7 @@ export default function App() {
         setEscalaFonte={setEscalaFonte}
       />
 
-      {/* Ajustado o maxWidth para 900px para comportar melhor o painel dos simulados */}
+      {/* Ajustado o maxWidth para 900px para comportar melhor o painel */}
       <main style={{ maxWidth: '900px', margin: '0 auto', padding: '16px' }}>
         
         {/* Banner PWA */}
@@ -316,6 +317,8 @@ export default function App() {
 
         {abaAtiva === 'simulados' && <RegistroSimulados />}
 
+        {abaAtiva === 'revisoes' && <SistemaRevisoes />}
+
       </main>
 
       {/* Modal de Tutorial */}
@@ -358,6 +361,10 @@ function CentralDuvidasModal({ abaAtiva, onClose }) {
 
         {abaAtiva === 'simulados' && (
           <p style={{ fontSize: '0.85rem', color: 'var(--text-primary, #cbd5e1)' }}>Registre seus simulados prestados, escolha provas oficiais ou crie modelos customizados de cursinhos e acompanhe o aproveitamento detalhado por matéria.</p>
+        )}
+
+        {abaAtiva === 'revisoes' && (
+          <p style={{ fontSize: '0.85rem', color: 'var(--text-primary, #cbd5e1)' }}>Agende tópicos para revisar usando o método de repetição espaçada. O sistema lembra o que você precisa revisar hoje e gerencia as datas futuras!</p>
         )}
 
         <button onClick={onClose} style={{ width: '100%', padding: '8px', borderRadius: '6px', border: 'none', backgroundColor: 'var(--accent-color, #2563eb)', color: '#fff', fontWeight: 'bold', marginTop: '12px', cursor: 'pointer' }}>Entendi</button>
