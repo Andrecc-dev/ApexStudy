@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Target, CheckCircle2, XCircle, Plus, Trash2, Brain, TrendingUp, AlertCircle } from 'lucide-react';
+import { Target, CheckCircle2, XCircle, Plus, Trash2, Brain, TrendingUp } from 'lucide-react';
 
 const MATERIAS_LISTA = [
   'Matemática',
@@ -80,7 +80,7 @@ export default function BancoQuestoes() {
     }
   };
 
-  // Cálculo por Matéria (Para diagnosticar facilidade/dificuldade)
+  // Cálculo por Matéria
   const diagnosticoPorMateria = MATERIAS_LISTA.map((mat) => {
     const treinosDaMateria = registros.filter((r) => r.materia === mat);
     const totalFeito = treinosDaMateria.reduce((acc, curr) => acc + curr.total, 0);
@@ -88,7 +88,7 @@ export default function BancoQuestoes() {
     const aproveitamento = totalFeito > 0 ? Math.round((totalAcertos / totalFeito) * 100) : null;
 
     let nivel = 'Sem dados';
-    let cor = '#64748b';
+    let cor = 'var(--text-secondary, #64748b)';
 
     if (aproveitamento !== null) {
       if (aproveitamento >= 75) {
@@ -125,10 +125,10 @@ export default function BancoQuestoes() {
       {/* Header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div>
-          <h2 style={{ fontSize: '1.3rem', color: '#60a5fa', display: 'flex', alignItems: 'center', gap: '8px', margin: 0 }}>
+          <h2 style={{ fontSize: '1.3rem', color: 'var(--accent-text, #60a5fa)', display: 'flex', alignItems: 'center', gap: '8px', margin: 0 }}>
             <Target size={22} /> Banco de Questões
           </h2>
-          <p style={{ color: '#94a3b8', fontSize: '0.8rem', margin: '2px 0 0 0' }}>
+          <p style={{ color: 'var(--text-secondary, #94a3b8)', fontSize: '0.8rem', margin: '2px 0 0 0' }}>
             Acompanhe seu desempenho por matéria.
           </p>
         </div>
@@ -138,8 +138,8 @@ export default function BancoQuestoes() {
             padding: '8px 12px',
             borderRadius: '6px',
             border: 'none',
-            backgroundColor: '#2563eb',
-            color: '#fff',
+            backgroundColor: 'var(--accent-color, #2563eb)',
+            color: 'var(--text-on-accent, #fff)',
             cursor: 'pointer',
             display: 'flex',
             alignItems: 'center',
@@ -154,16 +154,16 @@ export default function BancoQuestoes() {
 
       {/* Cards de Métricas Gerais */}
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '8px' }}>
-        <div style={{ backgroundColor: '#1e293b', padding: '10px', borderRadius: '8px', border: '1px solid #334155', textAlign: 'center' }}>
-          <span style={{ fontSize: '0.7rem', color: '#94a3b8' }}>Resolvidas</span>
-          <h3 style={{ margin: '4px 0 0 0', fontSize: '1.1rem', color: '#f8fafc' }}>{totalQuestoesFeitas}</h3>
+        <div style={{ backgroundColor: 'var(--bg-card, #1e293b)', padding: '12px', borderRadius: '8px', border: '1px solid var(--border-color, #334155)', textAlign: 'center' }}>
+          <span style={{ fontSize: '0.7rem', color: 'var(--text-secondary, #94a3b8)' }}>Resolvidas</span>
+          <h3 style={{ margin: '4px 0 0 0', fontSize: '1.1rem', color: 'var(--text-primary, #f8fafc)' }}>{totalQuestoesFeitas}</h3>
         </div>
-        <div style={{ backgroundColor: '#1e293b', padding: '10px', borderRadius: '8px', border: '1px solid #334155', textAlign: 'center' }}>
-          <span style={{ fontSize: '0.7rem', color: '#94a3b8' }}>Acertos</span>
+        <div style={{ backgroundColor: 'var(--bg-card, #1e293b)', padding: '12px', borderRadius: '8px', border: '1px solid var(--border-color, #334155)', textAlign: 'center' }}>
+          <span style={{ fontSize: '0.7rem', color: '#22c55e' }}>Acertos</span>
           <h3 style={{ margin: '4px 0 0 0', fontSize: '1.1rem', color: '#22c55e' }}>{totalAcertosGerais}</h3>
         </div>
-        <div style={{ backgroundColor: '#1e293b', padding: '10px', borderRadius: '8px', border: '1px solid #334155', textAlign: 'center' }}>
-          <span style={{ fontSize: '0.7rem', color: '#94a3b8' }}>Geral</span>
+        <div style={{ backgroundColor: 'var(--bg-card, #1e293b)', padding: '12px', borderRadius: '8px', border: '1px solid var(--border-color, #334155)', textAlign: 'center' }}>
+          <span style={{ fontSize: '0.7rem', color: '#eab308' }}>Geral</span>
           <h3 style={{ margin: '4px 0 0 0', fontSize: '1.1rem', color: taxaAproveitamentoGeral >= 70 ? '#22c55e' : '#eab308' }}>
             {taxaAproveitamentoGeral}%
           </h3>
@@ -172,13 +172,13 @@ export default function BancoQuestoes() {
 
       {/* Formulário de Novo Registro */}
       {mostrarForm && (
-        <form onSubmit={salvarTreino} style={{ backgroundColor: '#1e293b', padding: '14px', borderRadius: '10px', border: '1px solid #334155', display: 'flex', flexDirection: 'column', gap: '10px' }}>
-          <h4 style={{ margin: 0, fontSize: '0.9rem', color: '#93c5fd' }}>Registrar Bloco de Questões</h4>
+        <form onSubmit={salvarTreino} style={{ backgroundColor: 'var(--bg-card, #1e293b)', padding: '16px', borderRadius: '10px', border: '1px solid var(--border-color, #334155)', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          <h4 style={{ margin: 0, fontSize: '0.9rem', color: 'var(--accent-text, #93c5fd)' }}>Registrar Bloco de Questões</h4>
           
           <select
             value={materia}
             onChange={(e) => setMateria(e.target.value)}
-            style={{ padding: '8px', borderRadius: '6px', border: '1px solid #475569', backgroundColor: '#0f172a', color: '#fff', fontSize: '0.85rem' }}
+            style={{ padding: '10px', borderRadius: '6px', border: '1px solid var(--border-color, #475569)', backgroundColor: 'var(--bg-primary, #0f172a)', color: 'var(--text-primary, #fff)', fontSize: '0.85rem' }}
           >
             {MATERIAS_LISTA.map((mat) => (
               <option key={mat} value={mat}>{mat}</option>
@@ -190,30 +190,30 @@ export default function BancoQuestoes() {
             placeholder="Tópico (ex: Porcentagem, Leis de Newton)"
             value={topico}
             onChange={(e) => setTopico(e.target.value)}
-            style={{ padding: '8px', borderRadius: '6px', border: '1px solid #475569', backgroundColor: '#0f172a', color: '#fff', fontSize: '0.85rem' }}
+            style={{ padding: '10px', borderRadius: '6px', border: '1px solid var(--border-color, #475569)', backgroundColor: 'var(--bg-primary, #0f172a)', color: 'var(--text-primary, #fff)', fontSize: '0.85rem' }}
           />
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
             <div>
-              <label style={{ fontSize: '0.7rem', color: '#94a3b8' }}>Total de Questões</label>
+              <label style={{ fontSize: '0.75rem', color: 'var(--text-secondary, #94a3b8)', display: 'block', marginBottom: '4px' }}>Total de Questões</label>
               <input
                 type="number"
                 min="1"
                 placeholder="Ex: 20"
                 value={totalQuestoes}
                 onChange={(e) => setTotalQuestoes(e.target.value)}
-                style={{ width: '100%', padding: '8px', borderRadius: '6px', border: '1px solid #475569', backgroundColor: '#0f172a', color: '#fff', fontSize: '0.85rem', boxSizing: 'border-box' }}
+                style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid var(--border-color, #475569)', backgroundColor: 'var(--bg-primary, #0f172a)', color: 'var(--text-primary, #fff)', fontSize: '0.85rem', boxSizing: 'border-box' }}
               />
             </div>
             <div>
-              <label style={{ fontSize: '0.7rem', color: '#94a3b8' }}>Acertos</label>
+              <label style={{ fontSize: '0.75rem', color: 'var(--text-secondary, #94a3b8)', display: 'block', marginBottom: '4px' }}>Acertos</label>
               <input
                 type="number"
                 min="0"
                 placeholder="Ex: 16"
                 value={acertos}
                 onChange={(e) => setAcertos(e.target.value)}
-                style={{ width: '100%', padding: '8px', borderRadius: '6px', border: '1px solid #475569', backgroundColor: '#0f172a', color: '#fff', fontSize: '0.85rem', boxSizing: 'border-box' }}
+                style={{ width: '100%', padding: '10px', borderRadius: '6px', border: '1px solid var(--border-color, #475569)', backgroundColor: 'var(--bg-primary, #0f172a)', color: 'var(--text-primary, #fff)', fontSize: '0.85rem', boxSizing: 'border-box' }}
               />
             </div>
           </div>
@@ -225,16 +225,16 @@ export default function BancoQuestoes() {
       )}
 
       {/* Menu de Troca entre Diagnóstico de Matérias e Histórico */}
-      <div style={{ display: 'flex', gap: '8px', backgroundColor: '#0f172a', padding: '4px', borderRadius: '8px', border: '1px solid #334155' }}>
+      <div style={{ display: 'flex', gap: '8px', backgroundColor: 'var(--bg-card, #1e293b)', padding: '4px', borderRadius: '8px', border: '1px solid var(--border-color, #334155)' }}>
         <button
           onClick={() => setVisaoGeral('desempenho')}
           style={{
             flex: 1,
             padding: '8px',
             borderRadius: '6px',
-            border: 'none',
-            backgroundColor: visaoGeral === 'desempenho' ? '#2563eb' : 'transparent',
-            color: '#fff',
+            border: '1px solid ' + (visaoGeral === 'desempenho' ? 'var(--accent-color, #2563eb)' : 'transparent'),
+            backgroundColor: visaoGeral === 'desempenho' ? 'var(--accent-color, #2563eb)' : 'transparent',
+            color: visaoGeral === 'desempenho' ? 'var(--text-on-accent, #fff)' : 'var(--text-secondary, #94a3b8)',
             fontSize: '0.8rem',
             fontWeight: 'bold',
             cursor: 'pointer',
@@ -244,7 +244,7 @@ export default function BancoQuestoes() {
             gap: '6px'
           }}
         >
-          <Brain size={16} /> Diagnóstico de Matérias
+          <Brain size={16} /> Diagnóstico
         </button>
         <button
           onClick={() => setVisaoGeral('historico')}
@@ -252,9 +252,9 @@ export default function BancoQuestoes() {
             flex: 1,
             padding: '8px',
             borderRadius: '6px',
-            border: 'none',
-            backgroundColor: visaoGeral === 'historico' ? '#2563eb' : 'transparent',
-            color: '#fff',
+            border: '1px solid ' + (visaoGeral === 'historico' ? 'var(--accent-color, #2563eb)' : 'transparent'),
+            backgroundColor: visaoGeral === 'historico' ? 'var(--accent-color, #2563eb)' : 'transparent',
+            color: visaoGeral === 'historico' ? 'var(--text-on-accent, #fff)' : 'var(--text-secondary, #94a3b8)',
             fontSize: '0.8rem',
             fontWeight: 'bold',
             cursor: 'pointer',
@@ -271,10 +271,10 @@ export default function BancoQuestoes() {
       {/* ABA 1: DIAGNÓSTICO POR MATÉRIA */}
       {visaoGeral === 'desempenho' && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-          <h3 style={{ fontSize: '0.9rem', color: '#cbd5e1', margin: '4px 0' }}>Análise de Rendimento em Estudo</h3>
+          <h3 style={{ fontSize: '0.85rem', color: 'var(--text-secondary, #94a3b8)', margin: '4px 0 0 0' }}>Análise de Rendimento em Estudo</h3>
           
           {diagnosticoPorMateria.length === 0 ? (
-            <p style={{ color: '#64748b', textAlign: 'center', padding: '20px', fontSize: '0.85rem' }}>
+            <p style={{ color: 'var(--text-secondary, #64748b)', textAlign: 'center', padding: '20px', fontSize: '0.85rem' }}>
               Cadastre questões para ver onde você tem mais facilidade ou dificuldade!
             </p>
           ) : (
@@ -282,26 +282,26 @@ export default function BancoQuestoes() {
               <div
                 key={item.materia}
                 style={{
-                  backgroundColor: '#1e293b',
-                  padding: '12px',
+                  backgroundColor: 'var(--bg-card, #1e293b)',
+                  padding: '14px',
                   borderRadius: '8px',
-                  border: '1px solid #334155',
+                  border: '1px solid var(--border-color, #334155)',
                   borderLeft: `4px solid ${item.cor}`
                 }}
               >
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
-                  <span style={{ fontSize: '0.9rem', fontWeight: 'bold', color: '#f8fafc' }}>{item.materia}</span>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                  <span style={{ fontSize: '0.9rem', fontWeight: 'bold', color: 'var(--text-primary, #f8fafc)' }}>{item.materia}</span>
                   <span style={{ fontSize: '0.7rem', color: item.cor, fontWeight: 'bold', backgroundColor: `${item.cor}22`, padding: '2px 8px', borderRadius: '4px', border: `1px solid ${item.cor}55` }}>
                     {item.nivel}
                   </span>
                 </div>
 
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', color: '#94a3b8', marginBottom: '6px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', color: 'var(--text-secondary, #94a3b8)', marginBottom: '8px' }}>
                   <span>{item.totalAcertos} de {item.totalFeito} questões corretas</span>
                   <span style={{ fontWeight: 'bold', color: item.cor }}>{item.aproveitamento}%</span>
                 </div>
 
-                <div style={{ width: '100%', height: '6px', backgroundColor: '#0f172a', borderRadius: '3px', overflow: 'hidden' }}>
+                <div style={{ width: '100%', height: '6px', backgroundColor: 'var(--bg-primary, #0f172a)', borderRadius: '3px', overflow: 'hidden' }}>
                   <div style={{ width: `${item.aproveitamento}%`, height: '100%', backgroundColor: item.cor, transition: 'width 0.3s' }} />
                 </div>
               </div>
@@ -310,13 +310,13 @@ export default function BancoQuestoes() {
         </div>
       )}
 
-      {/* ABA 2: HISTÓRICO DE REGISTROS */}
+      {/* ABA 2: HISTÓRICO DE REGISTROS (COM ESPAÇAMENTO E BORDAS CORRIGIDOS) */}
       {visaoGeral === 'historico' && (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-          <h3 style={{ fontSize: '0.9rem', color: '#cbd5e1', margin: '4px 0' }}>Últimos Registros</h3>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          <h3 style={{ fontSize: '0.85rem', color: 'var(--text-secondary, #94a3b8)', margin: '4px 0 0 0' }}>Últimos Registros</h3>
 
           {registros.length === 0 ? (
-            <p style={{ color: '#64748b', textAlign: 'center', padding: '20px', fontSize: '0.85rem' }}>
+            <p style={{ color: 'var(--text-secondary, #64748b)', textAlign: 'center', padding: '20px', fontSize: '0.85rem' }}>
               Nenhum treino de questões registrado ainda.
             </p>
           ) : (
@@ -324,33 +324,29 @@ export default function BancoQuestoes() {
               <div
                 key={item.id}
                 style={{
-                  backgroundColor: '#1e293b',
-                  padding: '12px',
-                  borderRadius: '8px',
-                  border: '1px solid #334155',
+                  backgroundColor: 'var(--bg-card, #1e293b)',
+                  padding: '14px 16px',
+                  borderRadius: '10px',
+                  border: '1px solid var(--border-color, #334155)',
                   display: 'flex',
-                  justify: 'space-between',
-                  alignItems: 'center'
+                  flexDirection: 'column',
+                  gap: '10px',
+                  boxShadow: '0 1px 3px rgba(0,0,0,0.05)'
                 }}
               >
-                <div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <span style={{ fontSize: '0.85rem', fontWeight: 'bold', color: '#f8fafc' }}>{item.materia}</span>
-                    <span style={{ fontSize: '0.7rem', color: '#94a3b8' }}>{item.data}</span>
+                {/* Linha Superior: Matéria, Data, Porcentagem e Excluir */}
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <div>
+                    <strong style={{ fontSize: '0.95rem', color: 'var(--text-primary, #f8fafc)' }}>{item.materia}</strong>
+                    <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary, #94a3b8)', marginLeft: '10px' }}>{item.data}</span>
+                    {item.topico && (
+                      <p style={{ margin: '2px 0 0 0', color: 'var(--text-secondary, #94a3b8)', fontSize: '0.75rem' }}>
+                        Tópico: <strong>{item.topico}</strong>
+                      </p>
+                    )}
                   </div>
-                  <p style={{ margin: '2px 0 0 0', color: '#cbd5e1', fontSize: '0.75rem' }}>{item.topico}</p>
-                  <div style={{ display: 'flex', gap: '10px', fontSize: '0.75rem', marginTop: '4px' }}>
-                    <span style={{ color: '#22c55e', display: 'flex', alignItems: 'center', gap: '2px' }}>
-                      <CheckCircle2 size={12} /> {item.acertos} acertos
-                    </span>
-                    <span style={{ color: '#ef4444', display: 'flex', alignItems: 'center', gap: '2px' }}>
-                      <XCircle size={12} /> {item.erros} erros
-                    </span>
-                  </div>
-                </div>
 
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                  <div style={{ textAlign: 'right' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                     <span style={{
                       fontSize: '1rem',
                       fontWeight: 'bold',
@@ -358,16 +354,39 @@ export default function BancoQuestoes() {
                     }}>
                       {item.porcentagem}%
                     </span>
-                    <span style={{ display: 'block', fontSize: '0.65rem', color: '#94a3b8' }}>
-                      {item.acertos}/{item.total}
-                    </span>
+                    <button
+                      onClick={() => deletarRegistro(item.id)}
+                      style={{ backgroundColor: 'transparent', border: 'none', color: '#ef4444', cursor: 'pointer', padding: '4px' }}
+                    >
+                      <Trash2 size={16} />
+                    </button>
                   </div>
-                  <button
-                    onClick={() => deletarRegistro(item.id)}
-                    style={{ backgroundColor: 'transparent', border: 'none', color: '#ef4444', cursor: 'pointer', padding: '4px' }}
-                  >
-                    <Trash2 size={16} />
-                  </button>
+                </div>
+
+                {/* Caixa de Acertos/Erros Interna bem Espaçada */}
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  padding: '8px 12px',
+                  backgroundColor: 'var(--bg-primary, #0f172a)',
+                  borderRadius: '6px',
+                  border: '1px solid var(--border-color, #334155)',
+                  fontSize: '0.8rem'
+                }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#22c55e', fontWeight: '600' }}>
+                    <CheckCircle2 size={15} />
+                    <span>{item.acertos} acertos</span>
+                  </div>
+
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#ef4444', fontWeight: '600' }}>
+                    <XCircle size={15} />
+                    <span>{item.erros} erros</span>
+                  </div>
+
+                  <div style={{ color: 'var(--text-secondary, #94a3b8)', fontSize: '0.75rem' }}>
+                    Total: <strong style={{ color: 'var(--text-primary)' }}>{item.total}</strong>
+                  </div>
                 </div>
               </div>
             ))

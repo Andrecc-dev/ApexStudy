@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { 
   Play, Pause, RotateCcw, CheckCircle2, Circle, BookOpen, Clock, 
   Plus, Trash2, Calendar as CalendarIcon, Award, Flame, BellRing, 
-  Download, HelpCircle, X, Target 
+  Download, HelpCircle, X 
 } from 'lucide-react';
 
 import Header from './components/Header';
@@ -30,18 +30,16 @@ const rotinaInicial = {
 
 export default function App() {
 
-  // Dentro do componente App():
+  // Estado da Escala da Fonte (Padrão: 100%)
+  const [escalaFonte, setEscalaFonte] = useState(() => {
+    return Number(localStorage.getItem('apexstudy_fonte')) || 100;
+  });
 
-// Estado da Escala da Fonte (Padrão: 100%)
-const [escalaFonte, setEscalaFonte] = useState(() => {
-  return Number(localStorage.getItem('apexstudy_fonte')) || 100;
-});
-
-// Aplica a escala no elemento raiz <html style="font-size: 110%">
-useEffect(() => {
-  document.documentElement.style.fontSize = `${escalaFonte}%`;
-  localStorage.setItem('apexstudy_fonte', escalaFonte);
-}, [escalaFonte]);
+  // Aplica a escala no elemento raiz <html style="font-size: 110%">
+  useEffect(() => {
+    document.documentElement.style.fontSize = `${escalaFonte}%`;
+    localStorage.setItem('apexstudy_fonte', escalaFonte);
+  }, [escalaFonte]);
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isTutorialOpen, setIsTutorialOpen] = useState(false);
@@ -147,7 +145,7 @@ useEffect(() => {
   const progresso = tarefasDoDia.length > 0 ? Math.round((concluidasDia / tarefasDoDia.length) * 100) : 0;
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-primary, #0f172a)', color: 'var(--text-primary, #e2e8f0)', fontFamily: 'sans-serif', transition: 'background-color 0.3s, color 0.3s' }}>
+    <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-primary, #0f172a)', color: 'var(--text-primary, #e2e8f0)', fontFamily: 'sans-serif', transition: 'background-color 0.3s, color 0.3s', display: 'flex', flexDirection: 'column' }}>
       
       {/* Topo Fixo com Hambúrguer e Botão ? */}
       <Header onOpenMenu={() => setIsMenuOpen(true)} onOpenTutorial={() => setIsTutorialOpen(true)} />
@@ -165,12 +163,12 @@ useEffect(() => {
         setEscalaFonte={setEscalaFonte}
       />
 
-      <main style={{ maxWidth: '500px', margin: '0 auto', padding: '16px' }}>
+      <main style={{ maxWidth: '500px', width: '100%', margin: '0 auto', padding: '16px', flex: 1, boxSizing: 'border-box' }}>
         
         {/* Banner PWA */}
-        <div style={{ backgroundColor: 'var(--accent-color, #2563eb)', color: '#fff', padding: '8px 12px', borderRadius: '8px', marginBottom: '14px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.8rem' }}>
+        <div style={{ backgroundColor: 'var(--accent-color, #2563eb)', color: 'var(--text-on-accent, #fff)', padding: '8px 12px', borderRadius: '8px', marginBottom: '14px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.8rem' }}>
           <span>Quer usar como App no seu Celular/PC?</span>
-          <button onClick={instalarApp} style={{ backgroundColor: '#fff', color: 'var(--accent-color, #2563eb)', border: 'none', padding: '4px 10px', borderRadius: '6px', fontWeight: 'bold', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}>
+          <button onClick={instalarApp} style={{ backgroundColor: 'var(--bg-card, #fff)', color: 'var(--accent-text, #2563eb)', border: 'none', padding: '4px 10px', borderRadius: '6px', fontWeight: 'bold', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}>
             <Download size={14} /> Instalar
           </button>
         </div>
@@ -210,16 +208,21 @@ useEffect(() => {
               </div>
             </div>
 
-            {/* Selector Dias */}
+            {/* Selector Dias (COM BORDAS CORRIGIDAS PARA O TEMA CLARO E ESCURO) */}
             <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', paddingBottom: '8px', marginBottom: '16px' }}>
               {['Segunda', 'Terca', 'Quarta', 'Quinta', 'Sexta', 'Sabado', 'Domingo'].map((dia) => (
                 <button
                   key={dia}
                   onClick={() => setDiaAtual(dia)}
                   style={{
-                    padding: '6px 12px', borderRadius: '20px', border: 'none',
+                    padding: '6px 12px',
+                    borderRadius: '20px',
+                    border: diaAtual === dia ? '1px solid var(--accent-color, #2563eb)' : '1px solid var(--border-color, #334155)',
                     backgroundColor: diaAtual === dia ? 'var(--accent-color, #2563eb)' : 'var(--bg-card, #1e293b)',
-                    color: '#fff', cursor: 'pointer', whiteSpace: 'nowrap', fontSize: '0.8rem',
+                    color: diaAtual === dia ? 'var(--text-on-accent, #fff)' : 'var(--text-primary, #e2e8f0)', 
+                    cursor: 'pointer',
+                    whiteSpace: 'nowrap',
+                    fontSize: '0.8rem',
                     fontWeight: diaAtual === dia ? 'bold' : 'normal'
                   }}
                 >
@@ -229,8 +232,8 @@ useEffect(() => {
             </div>
 
             {/* Cronômetro */}
-            <div style={{ backgroundColor: tempoFinalizado ? '#1e1b4b' : 'var(--bg-card, #1e293b)', borderRadius: '12px', padding: '16px', marginBottom: '20px', textAlign: 'center', border: tempoFinalizado ? '2px solid #6366f1' : '1px solid var(--border-color, #334155)' }}>
-              <div style={{ color: tempoFinalizado ? '#818cf8' : 'var(--text-secondary, #94a3b8)', fontSize: '0.8rem', display: 'flex', justifyContent: 'center', gap: '6px' }}>
+            <div style={{ backgroundColor: tempoFinalizado ? 'var(--bg-card, #1e1b4b)' : 'var(--bg-card, #1e293b)', borderRadius: '12px', padding: '16px', marginBottom: '20px', textAlign: 'center', border: tempoFinalizado ? '2px solid var(--accent-text, #6366f1)' : '1px solid var(--border-color, #334155)' }}>
+              <div style={{ color: tempoFinalizado ? 'var(--accent-text, #818cf8)' : 'var(--text-secondary, #94a3b8)', fontSize: '0.8rem', display: 'flex', justifyContent: 'center', gap: '6px' }}>
                 {tempoFinalizado ? <BellRing size={16} /> : <Clock size={15} />}
                 {tempoFinalizado ? 'Bloco Concluído!' : 'Bloco de Foco'}
               </div>
@@ -238,8 +241,8 @@ useEffect(() => {
                 {`${String(Math.floor(tempoRestante / 60)).padStart(2, '0')}:${String(tempoRestante % 60).padStart(2, '0')}`}
               </div>
               <div style={{ display: 'flex', justifyContent: 'center', gap: '8px', marginBottom: '10px' }}>
-                <button onClick={() => setTempoRestante((t) => Math.max(0, t - 300))} style={{ padding: '2px 8px', borderRadius: '4px', border: '1px solid var(--border-color, #475569)', backgroundColor: 'transparent', color: 'var(--text-secondary, #94a3b8)', fontSize: '0.75rem' }}>-5 min</button>
-                <button onClick={() => setTempoRestante((t) => t + 300)} style={{ padding: '2px 8px', borderRadius: '4px', border: '1px solid var(--border-color, #475569)', backgroundColor: 'transparent', color: 'var(--text-secondary, #94a3b8)', fontSize: '0.75rem' }}>+5 min</button>
+                <button onClick={() => setTempoRestante((t) => Math.max(0, t - 300))} style={{ padding: '2px 8px', borderRadius: '4px', border: '1px solid var(--border-color, #475569)', backgroundColor: 'transparent', color: 'var(--text-secondary, #94a3b8)', fontSize: '0.75rem', cursor: 'pointer' }}>-5 min</button>
+                <button onClick={() => setTempoRestante((t) => t + 300)} style={{ padding: '2px 8px', borderRadius: '4px', border: '1px solid var(--border-color, #475569)', backgroundColor: 'transparent', color: 'var(--text-secondary, #94a3b8)', fontSize: '0.75rem', cursor: 'pointer' }}>+5 min</button>
               </div>
               <div style={{ display: 'flex', justifyContent: 'center', gap: '10px' }}>
                 <button onClick={() => { setTempoFinalizado(false); setRodando(!rodando); }} style={{ padding: '8px 16px', borderRadius: '6px', border: 'none', backgroundColor: rodando ? '#e11d48' : '#16a34a', color: '#fff', cursor: 'pointer', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '4px' }}>
@@ -265,7 +268,7 @@ useEffect(() => {
             {/* Botão Nova Matéria */}
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
               <h3 style={{ fontSize: '0.95rem', color: 'var(--text-primary, #cbd5e1)', margin: 0 }}>Agenda ({diaAtual})</h3>
-              <button onClick={() => setMostrarForm(!mostrarForm)} style={{ padding: '6px 10px', borderRadius: '6px', border: 'none', backgroundColor: 'var(--accent-color, #2563eb)', color: '#fff', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.8rem' }}>
+              <button onClick={() => setMostrarForm(!mostrarForm)} style={{ padding: '6px 10px', borderRadius: '6px', border: 'none', backgroundColor: 'var(--accent-color, #2563eb)', color: 'var(--text-on-accent, #fff)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.8rem', fontWeight: 'bold' }}>
                 <Plus size={16} /> Nova Matéria
               </button>
             </div>
@@ -279,7 +282,7 @@ useEffect(() => {
                   <input type="text" placeholder="Tópico (ex: Geometria)" value={novoTopico} onChange={(e) => setNovoTopico(e.target.value)} style={{ flex: 1, padding: '8px', borderRadius: '6px', border: '1px solid var(--border-color, #475569)', backgroundColor: 'var(--bg-primary, #0f172a)', color: 'var(--text-primary, #fff)' }} />
                   <input type="number" placeholder="Min" value={novoTempo} onChange={(e) => setNovoTempo(e.target.value)} style={{ width: '70px', padding: '8px', borderRadius: '6px', border: '1px solid var(--border-color, #475569)', backgroundColor: 'var(--bg-primary, #0f172a)', color: 'var(--text-primary, #fff)' }} />
                 </div>
-                <button type="submit" style={{ padding: '8px', borderRadius: '6px', border: 'none', backgroundColor: '#16a34a', color: '#fff', fontWeight: 'bold' }}>Salvar</button>
+                <button type="submit" style={{ padding: '8px', borderRadius: '6px', border: 'none', backgroundColor: '#16a34a', color: '#fff', fontWeight: 'bold', cursor: 'pointer' }}>Salvar</button>
               </form>
             )}
 
@@ -291,7 +294,7 @@ useEffect(() => {
                 tarefasDoDia.map((item) => {
                   const cor = CORES_MATERIA[item.materia] || CORES_MATERIA.Outro;
                   return (
-                    <div key={item.id} onClick={() => alternarConclusao(item.id)} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 12px', backgroundColor: item.concluido ? 'var(--bg-primary, #0f172a)' : 'var(--bg-card, #1e293b)', borderRadius: '8px', borderLeft: `4px solid ${cor}`, cursor: 'pointer', opacity: item.concluido ? 0.6 : 1 }}>
+                    <div key={item.id} onClick={() => alternarConclusao(item.id)} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 12px', backgroundColor: item.concluido ? 'var(--bg-primary, #0f172a)' : 'var(--bg-card, #1e293b)', borderRadius: '8px', borderLeft: `4px solid ${cor}`, borderTop: '1px solid var(--border-color, #334155)', borderRight: '1px solid var(--border-color, #334155)', borderBottom: '1px solid var(--border-color, #334155)', cursor: 'pointer', opacity: item.concluido ? 0.6 : 1 }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                         {item.concluido ? <CheckCircle2 color="#22c55e" size={18} /> : <Circle color="var(--text-secondary, #64748b)" size={18} />}
                         <div>
@@ -313,6 +316,20 @@ useEffect(() => {
           <BancoQuestoes />
         )}
       </main>
+
+      {/* RODAPÉ PRINCIPAL DO APP */}
+      <footer style={{ 
+        textAlign: 'center', 
+        padding: '20px 16px', 
+        fontSize: '0.75rem', 
+        color: 'var(--text-secondary, #64748b)',
+        borderTop: '1px solid var(--border-color, #1e293b)',
+        marginTop: 'auto'
+      }}>
+        <p style={{ margin: 0 }}>
+          <strong style={{ color: 'var(--text-primary, #cbd5e1)' }}>ApexStudy v2.0</strong> • Desenvolvido por <span style={{ color: 'var(--accent-text, #60a5fa)', fontWeight: '600' }}>André Cunha</span>
+        </p>
+      </footer>
 
       {/* Modal de Tutorial */}
       {isTutorialOpen && <CentralDuvidasModal abaAtiva={abaAtiva} onClose={() => setIsTutorialOpen(false)} />}
@@ -348,7 +365,7 @@ function CentralDuvidasModal({ abaAtiva, onClose }) {
         ) : (
           <p style={{ fontSize: '0.85rem', color: 'var(--text-primary, #cbd5e1)' }}>Organize seu cronograma semanal, controle o tempo com o timer Pomodoro e acompanhe seu progresso de estudo por dia.</p>
         )}
-        <button onClick={onClose} style={{ width: '100%', padding: '8px', borderRadius: '6px', border: 'none', backgroundColor: 'var(--accent-color, #2563eb)', color: '#fff', fontWeight: 'bold', marginTop: '12px', cursor: 'pointer' }}>Entendi</button>
+        <button onClick={onClose} style={{ width: '100%', padding: '8px', borderRadius: '6px', border: 'none', backgroundColor: 'var(--accent-color, #2563eb)', color: 'var(--text-on-accent, #fff)', fontWeight: 'bold', marginTop: '12px', cursor: 'pointer' }}>Entendi</button>
       </div>
     </div>
   );

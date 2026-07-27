@@ -1,11 +1,33 @@
-/* RESET BÁSICO */
-body {
+/* RESET BÁSICO E CONFIGURAÇÃO RAIZ */
+* {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --fonte-escala: 100%;
+}
+
+html {
+  font-size: var(--fonte-escala);
+  transition: font-size 0.2s ease;
+}
+
+body {
+  margin: 0;
+  padding: 16px;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   background-color: var(--bg-primary);
   color: var(--text-primary);
   transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Responsividade: ajusta o padding no computador */
+@media (min-width: 640px) {
+  body {
+    padding: 32px 16px;
+  }
 }
 
 /* ===================================================
@@ -21,21 +43,22 @@ body {
   --accent-color: #2563eb;
   --accent-hover: #1d4ed8;
   --accent-text: #60a5fa;
+  --text-on-accent: #ffffff; /* Texto branco em fundo azul */
 }
 
 /* ===================================================
    TEMA CLARO
    =================================================== */
-[data-theme='light'] {
+[data-theme="light"] {
+  /* TEMA CLARO CORRIGIDO: Fundo levemente acinzentado + bordas nítidas */
   --bg-primary: #f8fafc;
-  --bg-secondary: #ffffff;
   --bg-card: #ffffff;
-  --border-color: #cbd5e1;
-  --text-primary: #0f172a;
-  --text-secondary: #64748b;
+  --border-color: #cbd5e1; /* Borda bem perceptível */
+  --text-primary: #0f172a; /* Texto bem escuro/nítido */
+  --text-secondary: #475569; /* Cinza médio com boa leitura */
   --accent-color: #2563eb;
-  --accent-hover: #1d4ed8;
   --accent-text: #1d4ed8;
+  --text-on-accent: #ffffff;
 }
 
 /* ===================================================
@@ -51,68 +74,31 @@ body {
   --accent-color: #ffff00;
   --accent-hover: #e6e600;
   --accent-text: #ffff00;
+  --text-on-accent: #000000; /* CORRIGIDO: Texto PRETO em cima do fundo amarelo */
 }
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: system-ui, -apple-system, sans-serif;
-}
-
-body {
-  background-color: #0f172a;
-  color: #f8fafc;
-  padding: 16px;
-}
-
-/* Responsividade: ajusta o padding no computador */
-@media (min-width: 640px) {
-  body {
-    padding: 32px 16px;
-  }
-}
-
-/* 🎨 BARRA DE ROLAGEM CUSTOMIZADA E BONITA (Webkit/Chrome/Edge/Safari) */
+/* 🎨 BARRA DE ROLAGEM CUSTOMIZADA (Webkit/Chrome/Edge/Safari) */
 ::-webkit-scrollbar {
-  height: 6px; /* Altura da barra horizontal */
-  width: 6px;  /* Largura da barra vertical */
+  height: 6px;
+  width: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: #1e293b; /* Fundo do trilho */
+  background: var(--bg-secondary);
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #3b82f6; /* Cor da barrinha (Azul) */
+  background: var(--border-color);
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #2563eb; /* Cor ao passar o mouse */
+  background: var(--accent-color);
 }
 
 /* Estilização para o Firefox */
 * {
   scrollbar-width: thin;
-  scrollbar-color: #3b82f6 #1e293b;
-}
-
-:root {
-  --fonte-escala: 100%;
-}
-
-html {
-  font-size: var(--fonte-escala);
-  transition: font-size 0.2s ease;
-}
-
-body {
-  margin: 0;
-  padding: 0;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background-color: var(--bg-primary);
-  color: var(--text-primary);
-  transition: background-color 0.3s ease, color 0.3s ease;
+  scrollbar-color: var(--border-color) var(--bg-secondary);
 }

@@ -1,296 +1,423 @@
-import React, { useState, useEffect } from 'react';
-import { X, Calendar, Target, HelpCircle, Moon, Sun, Eye, ZoomIn, ZoomOut } from 'lucide-react';
+import React from 'react';
+import { BookOpen, Target, Sun, Moon, Eye, HelpCircle, X } from 'lucide-react';
 
-export default function Sidebar({ 
-  isOpen, 
-  onClose, 
-  abaAtiva, 
-  setAbaAtiva, 
+export default function Sidebar({
+  isOpen,
+  onClose,
+  abaAtiva,
+  setAbaAtiva,
   abrirTutorial,
   temaAtual,
   setTemaAtual,
-  escalaFonte,        // <-- Nova Prop
-  setEscalaFonte      // <-- Nova Prop
+  escalaFonte,
+  setEscalaFonte
 }) {
-  const [shouldRender, setShouldRender] = useState(isOpen);
+  if (!isOpen) return null;
 
-  useEffect(() => {
-    if (isOpen) setShouldRender(true);
-  }, [isOpen]);
-
-  if (!shouldRender) return null;
-
-  const handleAnimationEnd = () => {
-    if (!isOpen) setShouldRender(false);
+  const diminuirFonte = () => {
+    if (escalaFonte > 85) setEscalaFonte(escalaFonte - 5);
   };
 
-  const navegarPara = (aba) => {
-    setAbaAtiva(aba);
-    onClose();
+  const aumentarFonte = () => {
+    if (escalaFonte < 125) setEscalaFonte(escalaFonte + 5);
   };
 
-  const alterarFonte = (delta) => {
-    setEscalaFonte((prev) => {
-      const nova = prev + delta;
-      return Math.min(Math.max(nova, 90), 130); // Limites: entre 90% e 130%
-    });
+  const resetarFonte = () => {
+    setEscalaFonte(100);
   };
 
   return (
-    <>
-      {/* Fundo Escuro */}
+    <div
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100vw',
+        height: '100vh',
+        backgroundColor: 'rgba(0, 0, 0, 0.6)',
+        backdropFilter: 'blur(3px)',
+        zIndex: 999,
+        display: 'flex'
+      }}
+      onClick={onClose}
+    >
       <div
-        onClick={onClose}
         style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          width: '100vw',
-          height: '100vh',
-          backgroundColor: 'rgba(0, 0, 0, 0.6)',
-          zIndex: 998,
-          backdropFilter: 'blur(3px)',
-          opacity: isOpen ? 1 : 0,
-          transition: 'opacity 0.3s ease-in-out'
-        }}
-      />
-
-      {/* Menu Lateral */}
-      <aside
-        onTransitionEnd={handleAnimationEnd}
-        style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          width: '260px',
-          height: '100vh',
-          backgroundColor: 'var(--bg-secondary, #0f172a)',
+          width: '280px',
+          height: '100%',
+          backgroundColor: 'var(--bg-card, #1e293b)',
           borderRight: '1px solid var(--border-color, #334155)',
-          zIndex: 999,
+          padding: '20px',
+          boxSizing: 'border-box',
           display: 'flex',
           flexDirection: 'column',
-          padding: '20px 16px',
-          boxSizing: 'border-box',
-          boxShadow: '4px 0 16px rgba(0,0,0,0.5)',
-          transform: isOpen ? 'translateX(0)' : 'translateX(-100%)',
-          transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
+          justifyContent: 'space-between',
+          boxShadow: '4px 0 20px rgba(0,0,0,0.3)',
+          overflowY: 'auto'
         }}
+        onClick={(e) => e.stopPropagation()}
       >
-        {/* Topo do Menu */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
-          <h3 style={{ margin: 0, fontSize: '1.1rem', color: 'var(--accent-text, #60a5fa)', fontWeight: 'bold' }}>
-            ApexStudy
-          </h3>
-          <button
-            onClick={onClose}
-            style={{ backgroundColor: 'transparent', border: 'none', color: 'var(--text-secondary, #94a3b8)', cursor: 'pointer', padding: '4px' }}
+        {/* PARTE SUPERIOR: TÍTULO E MÓDULOS */}
+        <div>
+          {/* Header do Menu */}
+          <div
+            style={{
+              display: 'flex',
+              justify: 'space-between',
+              alignItems: 'center',
+              marginBottom: '24px'
+            }}
           >
-            <X size={22} />
-          </button>
-        </div>
+            <h2
+              style={{
+                fontSize: '1.2rem',
+                color: 'var(--accent-text, #60a5fa)',
+                margin: 0,
+                fontWeight: 'bold'
+              }}
+            >
+              ApexStudy
+            </h2>
+            <button
+              onClick={onClose}
+              style={{
+                backgroundColor: 'transparent',
+                border: 'none',
+                color: 'var(--text-secondary, #94a3b8)',
+                cursor: 'pointer',
+                padding: '4px'
+              }}
+            >
+              <X size={20} />
+            </button>
+          </div>
 
-        {/* Links de Navegação */}
-        <nav style={{ display: 'flex', flexDirection: 'column', gap: '8px', flex: 1 }}>
-          <span style={{ fontSize: '0.7rem', color: 'var(--text-secondary, #64748b)', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 'bold', marginBottom: '4px' }}>
+          <span
+            style={{
+              fontSize: '0.7rem',
+              fontWeight: 'bold',
+              color: 'var(--text-secondary, #64748b)',
+              letterSpacing: '1px',
+              display: 'block',
+              marginBottom: '12px',
+              textTransform: 'uppercase'
+            }}
+          >
             Módulos
           </span>
 
-          <button
-            onClick={() => navegarPara('rotina')}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '12px',
-              padding: '10px 12px',
-              borderRadius: '8px',
-              border: 'none',
-              backgroundColor: abaAtiva === 'rotina' ? 'var(--accent-color, #2563eb)' : 'transparent',
-              color: abaAtiva === 'rotina' ? '#fff' : 'var(--text-primary, #cbd5e1)',
-              fontWeight: '500',
-              fontSize: '0.9rem',
-              cursor: 'pointer',
-              textAlign: 'left'
-            }}
-          >
-            <Calendar size={18} /> Rotina de Estudos
-          </button>
-
-          <button
-            onClick={() => navegarPara('questoes')}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '12px',
-              padding: '10px 12px',
-              borderRadius: '8px',
-              border: 'none',
-              backgroundColor: abaAtiva === 'questoes' ? 'var(--accent-color, #2563eb)' : 'transparent',
-              color: abaAtiva === 'questoes' ? '#fff' : 'var(--text-primary, #cbd5e1)',
-              fontWeight: '500',
-              fontSize: '0.9rem',
-              cursor: 'pointer',
-              textAlign: 'left'
-            }}
-          >
-            <Target size={18} /> Banco de Questões
-          </button>
-        </nav>
-
-        {/* CONTROLE DE TAMANHO DA FONTE */}
-        <div style={{ marginBottom: '12px', paddingTop: '12px', borderTop: '1px solid var(--border-color, #334155)' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-            <span style={{ fontSize: '0.7rem', color: 'var(--text-secondary, #64748b)', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 'bold' }}>
-              Tamanho do Texto
-            </span>
-            <span style={{ fontSize: '0.75rem', fontWeight: 'bold', color: 'var(--accent-text, #60a5fa)' }}>
-              {escalaFonte}%
-            </span>
-          </div>
-
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '6px' }}>
+          {/* Botões de Navegação entre as Abas */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            {/* 1. Módulo Rotina de Estudos */}
             <button
-              onClick={() => alterarFonte(-10)}
-              disabled={escalaFonte <= 90}
-              style={{
-                padding: '6px',
-                borderRadius: '6px',
-                border: '1px solid var(--border-color, #334155)',
-                backgroundColor: 'var(--bg-primary, #0f172a)',
-                color: 'var(--text-primary, #fff)',
-                cursor: escalaFonte <= 90 ? 'not-allowed' : 'pointer',
-                opacity: escalaFonte <= 90 ? 0.4 : 1,
-                fontSize: '0.8rem',
-                fontWeight: 'bold'
+              onClick={() => {
+                setAbaAtiva('rotina');
+                onClose();
               }}
-            >
-              A -
-            </button>
-
-            <button
-              onClick={() => setEscalaFonte(100)}
               style={{
-                padding: '6px',
-                borderRadius: '6px',
-                border: '1px solid var(--border-color, #334155)',
-                backgroundColor: escalaFonte === 100 ? 'var(--accent-color, #2563eb)' : 'var(--bg-primary, #0f172a)',
-                color: '#fff',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px',
+                width: '100%',
+                padding: '12px 14px',
+                borderRadius: '8px',
+                border: 'none',
+                backgroundColor:
+                  abaAtiva === 'rotina'
+                    ? 'var(--accent-color, #2563eb)'
+                    : 'transparent',
+                color:
+                  abaAtiva === 'rotina'
+                    ? 'var(--text-on-accent, #fff)'
+                    : 'var(--text-primary, #e2e8f0)',
+                fontWeight: abaAtiva === 'rotina' ? 'bold' : 'normal',
+                fontSize: '0.9rem',
                 cursor: 'pointer',
-                fontSize: '0.8rem',
-                fontWeight: 'bold'
+                textAlign: 'left',
+                transition: 'all 0.2s'
               }}
             >
-              100%
+              <BookOpen size={18} />
+              Rotina de Estudos
             </button>
 
+            {/* 2. Módulo Banco de Questões */}
             <button
-              onClick={() => alterarFonte(10)}
-              disabled={escalaFonte >= 130}
+              onClick={() => {
+                setAbaAtiva('questoes');
+                onClose();
+              }}
               style={{
-                padding: '6px',
-                borderRadius: '6px',
-                border: '1px solid var(--border-color, #334155)',
-                backgroundColor: 'var(--bg-primary, #0f172a)',
-                color: 'var(--text-primary, #fff)',
-                cursor: escalaFonte >= 130 ? 'not-allowed' : 'pointer',
-                opacity: escalaFonte >= 130 ? 0.4 : 1,
-                fontSize: '0.8rem',
-                fontWeight: 'bold'
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px',
+                width: '100%',
+                padding: '12px 14px',
+                borderRadius: '8px',
+                border: 'none',
+                backgroundColor:
+                  abaAtiva === 'questoes'
+                    ? 'var(--accent-color, #2563eb)'
+                    : 'transparent',
+                color:
+                  abaAtiva === 'questoes'
+                    ? 'var(--text-on-accent, #fff)'
+                    : 'var(--text-primary, #e2e8f0)',
+                fontWeight: abaAtiva === 'questoes' ? 'bold' : 'normal',
+                fontSize: '0.9rem',
+                cursor: 'pointer',
+                textAlign: 'left',
+                transition: 'all 0.2s'
               }}
             >
-              A +
+              <Target size={18} />
+              Banco de Questões
             </button>
           </div>
         </div>
 
-        {/* SELETOR DE TEMAS */}
-        <div style={{ marginBottom: '16px' }}>
-          <span style={{ fontSize: '0.7rem', color: 'var(--text-secondary, #64748b)', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 'bold', display: 'block', marginBottom: '8px' }}>
-            Aparência / Tema
-          </span>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '4px', backgroundColor: 'var(--bg-primary, #0f172a)', padding: '4px', borderRadius: '8px', border: '1px solid var(--border-color, #334155)' }}>
-            <button
-              onClick={() => setTemaAtual('dark')}
-              title="Tema Escuro"
-              style={{
-                padding: '6px',
-                borderRadius: '6px',
-                border: 'none',
-                backgroundColor: temaAtual === 'dark' ? 'var(--accent-color, #2563eb)' : 'transparent',
-                color: temaAtual === 'dark' ? '#fff' : 'var(--text-secondary, #94a3b8)',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}
-            >
-              <Moon size={16} />
-            </button>
+        {/* PARTE INFERIOR: CONFIGURAÇÕES E TEMA */}
+        <div style={{ marginTop: '24px' }}>
+          <div
+            style={{
+              height: '1px',
+              backgroundColor: 'var(--border-color, #334155)',
+              marginBottom: '16px'
+            }}
+          />
 
-            <button
-              onClick={() => setTemaAtual('light')}
-              title="Tema Claro"
+          {/* Controle de Fonte */}
+          <div style={{ marginBottom: '16px' }}>
+            <div
               style={{
-                padding: '6px',
-                borderRadius: '6px',
-                border: 'none',
-                backgroundColor: temaAtual === 'light' ? 'var(--accent-color, #2563eb)' : 'transparent',
-                color: temaAtual === 'light' ? '#fff' : 'var(--text-secondary, #94a3b8)',
-                cursor: 'pointer',
                 display: 'flex',
+                justify: 'space-between',
                 alignItems: 'center',
-                justifyContent: 'center'
+                marginBottom: '8px'
               }}
             >
-              <Sun size={16} />
-            </button>
+              <span
+                style={{
+                  fontSize: '0.7rem',
+                  fontWeight: 'bold',
+                  color: 'var(--text-secondary, #64748b)',
+                  letterSpacing: '0.5px',
+                  textTransform: 'uppercase'
+                }}
+              >
+                Tamanho do Texto
+              </span>
+              <span
+                style={{
+                  fontSize: '0.75rem',
+                  fontWeight: 'bold',
+                  color: 'var(--accent-text, #60a5fa)'
+                }}
+              >
+                {escalaFonte}%
+              </span>
+            </div>
 
-            <button
-              onClick={() => setTemaAtual('high-contrast')}
-              title="Alto Contraste"
-              style={{
-                padding: '6px',
-                borderRadius: '6px',
-                border: 'none',
-                backgroundColor: temaAtual === 'high-contrast' ? 'var(--accent-color, #ffff00)' : 'transparent',
-                color: temaAtual === 'high-contrast' ? '#000' : 'var(--text-secondary, #94a3b8)',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}
-            >
-              <Eye size={16} />
-            </button>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '6px' }}>
+              <button
+                onClick={diminuirFonte}
+                style={{
+                  padding: '8px',
+                  borderRadius: '6px',
+                  border: '1px solid var(--border-color, #475569)',
+                  backgroundColor: 'var(--bg-primary, #0f172a)',
+                  color: 'var(--text-primary, #fff)',
+                  cursor: 'pointer',
+                  fontSize: '0.8rem',
+                  fontWeight: 'bold'
+                }}
+              >
+                A -
+              </button>
+              <button
+                onClick={resetarFonte}
+                style={{
+                  padding: '8px',
+                  borderRadius: '6px',
+                  border: 'none',
+                  backgroundColor: 'var(--accent-color, #2563eb)',
+                  color: 'var(--text-on-accent, #fff)',
+                  cursor: 'pointer',
+                  fontSize: '0.75rem',
+                  fontWeight: 'bold'
+                }}
+              >
+                100%
+              </button>
+              <button
+                onClick={aumentarFonte}
+                style={{
+                  padding: '8px',
+                  borderRadius: '6px',
+                  border: '1px solid var(--border-color, #475569)',
+                  backgroundColor: 'var(--bg-primary, #0f172a)',
+                  color: 'var(--text-primary, #fff)',
+                  cursor: 'pointer',
+                  fontSize: '0.8rem',
+                  fontWeight: 'bold'
+                }}
+              >
+                A +
+              </button>
+            </div>
           </div>
-        </div>
 
-        {/* Rodapé (Central de Ajuda) */}
-        <div>
+          {/* Seleção de Tema */}
+          <div style={{ marginBottom: '16px' }}>
+            <span
+              style={{
+                fontSize: '0.7rem',
+                fontWeight: 'bold',
+                color: 'var(--text-secondary, #64748b)',
+                letterSpacing: '0.5px',
+                display: 'block',
+                marginBottom: '8px',
+                textTransform: 'uppercase'
+              }}
+            >
+              Aparência / Tema
+            </span>
+
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '6px' }}>
+              {/* Tema Escuro */}
+              <button
+                onClick={() => setTemaAtual('dark')}
+                title="Tema Escuro"
+                style={{
+                  padding: '8px',
+                  borderRadius: '6px',
+                  border:
+                    temaAtual === 'dark'
+                      ? '1px solid var(--accent-color, #2563eb)'
+                      : '1px solid var(--border-color, #475569)',
+                  backgroundColor:
+                    temaAtual === 'dark'
+                      ? 'var(--accent-color, #2563eb)'
+                      : 'var(--bg-primary, #0f172a)',
+                  color:
+                    temaAtual === 'dark'
+                      ? 'var(--text-on-accent, #fff)'
+                      : 'var(--text-primary, #fff)',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center'
+                }}
+              >
+                <Moon size={16} />
+              </button>
+
+              {/* Tema Claro */}
+              <button
+                onClick={() => setTemaAtual('light')}
+                title="Tema Claro"
+                style={{
+                  padding: '8px',
+                  borderRadius: '6px',
+                  border:
+                    temaAtual === 'light'
+                      ? '1px solid var(--accent-color, #2563eb)'
+                      : '1px solid var(--border-color, #475569)',
+                  backgroundColor:
+                    temaAtual === 'light'
+                      ? 'var(--accent-color, #2563eb)'
+                      : 'var(--bg-primary, #0f172a)',
+                  color:
+                    temaAtual === 'light'
+                      ? 'var(--text-on-accent, #fff)'
+                      : 'var(--text-primary, #fff)',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center'
+                }}
+              >
+                <Sun size={16} />
+              </button>
+
+              {/* Alto Contraste */}
+              <button
+                onClick={() => setTemaAtual('high-contrast')}
+                title="Alto Contraste"
+                style={{
+                  padding: '8px',
+                  borderRadius: '6px',
+                  border:
+                    temaAtual === 'high-contrast'
+                      ? '1px solid var(--accent-color, #2563eb)'
+                      : '1px solid var(--border-color, #475569)',
+                  backgroundColor:
+                    temaAtual === 'high-contrast'
+                      ? 'var(--accent-color, #2563eb)'
+                      : 'var(--bg-primary, #0f172a)',
+                  color:
+                    temaAtual === 'high-contrast'
+                      ? 'var(--text-on-accent, #fff)'
+                      : 'var(--text-primary, #fff)',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center'
+                }}
+              >
+                <Eye size={16} />
+              </button>
+            </div>
+          </div>
+
+          {/* Botão de Tutorial */}
           <button
             onClick={() => {
-              onClose();
               abrirTutorial();
+              onClose();
             }}
             style={{
-              width: '100%',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               gap: '8px',
+              width: '100%',
               padding: '10px',
               borderRadius: '8px',
-              border: '1px solid var(--border-color, #334155)',
-              backgroundColor: 'var(--bg-card, #1e293b)',
-              color: 'var(--accent-text, #38bdf8)',
+              border: 'none',
+              backgroundColor: 'var(--bg-primary, #0f172a)',
+              color: 'var(--accent-text, #2563eb)',
               fontWeight: 'bold',
-              fontSize: '0.85rem',
+              fontSize: '0.8rem',
               cursor: 'pointer'
             }}
           >
-            <HelpCircle size={18} /> Como usar este módulo?
+            <HelpCircle size={16} /> Como usar este módulo?
           </button>
+
+          {/* Créditos */}
+          <div
+            style={{
+              height: '1px',
+              backgroundColor: 'var(--border-color, #334155)',
+              margin: '16px 0 12px 0'
+            }}
+          />
+          <p
+            style={{
+              fontSize: '0.65rem',
+              color: 'var(--text-secondary, #64748b)',
+              textAlign: 'center',
+              margin: 0
+            }}
+          >
+            Desenvolvido por{' '}
+            <strong style={{ color: 'var(--accent-text, #60a5fa)' }}>
+              André Cunha
+            </strong>
+          </p>
         </div>
-      </aside>
-    </>
+      </div>
+    </div>
   );
 }
