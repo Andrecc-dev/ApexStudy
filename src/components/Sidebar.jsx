@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { X, Calendar, Target, FileText, RefreshCw, HelpCircle, Moon, Sun, Eye } from 'lucide-react';
+import { X, Calendar, Target, FileText, RefreshCw, BarChart2, HelpCircle, Moon, Sun, Eye } from 'lucide-react';
 
 export default function Sidebar({ 
   isOpen, 
@@ -155,7 +155,6 @@ export default function Sidebar({
             <FileText size={18} /> Registro de Simulados
           </button>
 
-          {/* NOVO ITEM: SISTEMA DE REVISÕES */}
           <button
             onClick={() => navegarPara('revisoes')}
             style={{
@@ -174,6 +173,27 @@ export default function Sidebar({
             }}
           >
             <RefreshCw size={18} /> Sistema de Revisões
+          </button>
+
+          {/* NOVO ITEM: GRÁFICOS E DESEMPENHO */}
+          <button
+            onClick={() => navegarPara('graficos')}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '12px',
+              padding: '10px 12px',
+              borderRadius: '8px',
+              border: 'none',
+              backgroundColor: abaAtiva === 'graficos' ? 'var(--accent-color, #2563eb)' : 'transparent',
+              color: abaAtiva === 'graficos' ? '#fff' : 'var(--text-primary, #cbd5e1)',
+              fontWeight: '500',
+              fontSize: '0.9rem',
+              cursor: 'pointer',
+              textAlign: 'left'
+            }}
+          >
+            <BarChart2 size={18} /> Gráficos e Desempenho
           </button>
         </nav>
 

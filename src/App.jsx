@@ -2,14 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { 
   Play, Pause, RotateCcw, CheckCircle2, Circle, BookOpen, Clock, 
   Plus, Trash2, Calendar as CalendarIcon, Award, Flame, BellRing, 
-  Download, HelpCircle, X, Target, RefreshCw 
+  Download, HelpCircle, X 
 } from 'lucide-react';
 
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 import BancoQuestoes from './components/BancoQuestoes';
 import RegistroSimulados from './components/RegistroSimulados';
-import SistemaRevisoes from './components/SistemaRevisoes'; // <-- IMPORTADO AQUI
+import SistemaRevisoes from './components/SistemaRevisoes';
+import Graficos from './components/Graficos';
 
 const DIAS = ['Domingo', 'Segunda', 'Terca', 'Quarta', 'Quinta', 'Sexta', 'Sabado'];
 
@@ -45,7 +46,7 @@ export default function App() {
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isTutorialOpen, setIsTutorialOpen] = useState(false);
-  const [abaAtiva, setAbaAtiva] = useState('rotina'); // 'rotina', 'questoes', 'simulados' ou 'revisoes'
+  const [abaAtiva, setAbaAtiva] = useState('rotina'); // 'rotina', 'questoes', 'simulados', 'revisoes' ou 'graficos'
 
   // Gestão de Tema (dark, light, high-contrast)
   const [tema, setTema] = useState(() => localStorage.getItem('apexstudy_tema') || 'dark');
@@ -146,6 +147,33 @@ export default function App() {
   const concluidasDia = tarefasDoDia.filter((t) => t.concluido).length;
   const progresso = tarefasDoDia.length > 0 ? Math.round((concluidasDia / tarefasDoDia.length) * 100) : 0;
 
+  // --- LÓGICA DE INTEGRAÇÃO COM GRÁFICOS ---
+  const gerarDadosGrafico = () => {
+    const estatisticas = {};
+    
+    // Passa por todos os dias e tarefas do cronograma
+    Object.values(cronograma).flat().forEach((tarefa) => {
+      if (tarefa.concluido) {
+        // Se a matéria ainda não existe nas estatísticas, cria
+        if (!estatisticas[tarefa.materia]) {
+          estatisticas[tarefa.materia] = { 
+            name: tarefa.materia, 
+            blocos: 0, 
+            tempoMinutos: 0 
+          };
+        }
+        // Soma +1 bloco e soma os minutos daquele bloco
+        estatisticas[tarefa.materia].blocos += 1;
+        estatisticas[tarefa.materia].tempoMinutos += (Number(tarefa.tempo) || 50);
+      }
+    });
+
+    // Transforma o objeto em um Array (formato ideal para bibliotecas de gráficos)
+    return Object.values(estatisticas); 
+  };
+
+  const dadosEstudo = gerarDadosGrafico();
+
   return (
     <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-primary, #0f172a)', color: 'var(--text-primary, #e2e8f0)', fontFamily: 'sans-serif', transition: 'background-color 0.3s, color 0.3s' }}>
       
@@ -165,7 +193,6 @@ export default function App() {
         setEscalaFonte={setEscalaFonte}
       />
 
-      {/* Ajustado o maxWidth para 900px para comportar melhor o painel */}
       <main style={{ maxWidth: '900px', margin: '0 auto', padding: '16px' }}>
         
         {/* Banner PWA */}
@@ -319,6 +346,8 @@ export default function App() {
 
         {abaAtiva === 'revisoes' && <SistemaRevisoes />}
 
+        {abaAtiva === 'graficos' && <Graficos dadosEstudo={dadosEstudo} />}
+
       </main>
 
       {/* Modal de Tutorial */}
@@ -365,6 +394,10 @@ function CentralDuvidasModal({ abaAtiva, onClose }) {
 
         {abaAtiva === 'revisoes' && (
           <p style={{ fontSize: '0.85rem', color: 'var(--text-primary, #cbd5e1)' }}>Agende tópicos para revisar usando o método de repetição espaçada. O sistema lembra o que você precisa revisar hoje e gerencia as datas futuras!</p>
+        )}
+
+        {abaAtiva === 'graficos' && (
+          <p style={{ fontSize: '0.85rem', color: 'var(--text-primary, #cbd5e1)' }}>Acompanhe gráficos visuais de desempenho, evolução temporal da sua taxa de acertos e distribuição por matéria.</p>
         )}
 
         <button onClick={onClose} style={{ width: '100%', padding: '8px', borderRadius: '6px', border: 'none', backgroundColor: 'var(--accent-color, #2563eb)', color: '#fff', fontWeight: 'bold', marginTop: '12px', cursor: 'pointer' }}>Entendi</button>
