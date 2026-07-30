@@ -1,5 +1,7 @@
-import React from 'react';
-import { BookOpen, Target, Sun, Moon, Eye, HelpCircle, X } from 'lucide-react';
+// src/components/Sidebar.jsx
+
+import React, { useState, useEffect } from 'react';
+import { X, Calendar, Target, FileText, HelpCircle, Moon, Sun, Eye } from 'lucide-react';
 
 export default function Sidebar({
   isOpen,
@@ -103,9 +105,80 @@ export default function Sidebar({
             Módulos
           </span>
 
-          {/* Botões de Navegação entre as Abas */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            {/* 1. Módulo Rotina de Estudos */}
+          <button
+            onClick={() => navegarPara('rotina')}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '12px',
+              padding: '10px 12px',
+              borderRadius: '8px',
+              border: 'none',
+              backgroundColor: abaAtiva === 'rotina' ? 'var(--accent-color, #2563eb)' : 'transparent',
+              color: abaAtiva === 'rotina' ? '#fff' : 'var(--text-primary, #cbd5e1)',
+              fontWeight: '500',
+              fontSize: '0.9rem',
+              cursor: 'pointer',
+              textAlign: 'left'
+            }}
+          >
+            <Calendar size={18} /> Rotina de Estudos
+          </button>
+
+          <button
+            onClick={() => navegarPara('questoes')}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '12px',
+              padding: '10px 12px',
+              borderRadius: '8px',
+              border: 'none',
+              backgroundColor: abaAtiva === 'questoes' ? 'var(--accent-color, #2563eb)' : 'transparent',
+              color: abaAtiva === 'questoes' ? '#fff' : 'var(--text-primary, #cbd5e1)',
+              fontWeight: '500',
+              fontSize: '0.9rem',
+              cursor: 'pointer',
+              textAlign: 'left'
+            }}
+          >
+            <Target size={18} /> Banco de Questões
+          </button>
+
+          {/* NOVO ITEM: REGISTRO DE SIMULADOS */}
+          <button
+            onClick={() => navegarPara('simulados')}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '12px',
+              padding: '10px 12px',
+              borderRadius: '8px',
+              border: 'none',
+              backgroundColor: abaAtiva === 'simulados' ? 'var(--accent-color, #2563eb)' : 'transparent',
+              color: abaAtiva === 'simulados' ? '#fff' : 'var(--text-primary, #cbd5e1)',
+              fontWeight: '500',
+              fontSize: '0.9rem',
+              cursor: 'pointer',
+              textAlign: 'left'
+            }}
+          >
+            <FileText size={18} /> Registro de Simulados
+          </button>
+        </div>
+
+        {/* CONTROLE DE TAMANHO DA FONTE */}
+        <div style={{ marginBottom: '12px', paddingTop: '12px', borderTop: '1px solid var(--border-color, #334155)' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+            <span style={{ fontSize: '0.7rem', color: 'var(--text-secondary, #64748b)', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 'bold' }}>
+              Tamanho do Texto
+            </span>
+            <span style={{ fontSize: '0.75rem', fontWeight: 'bold', color: 'var(--accent-text, #60a5fa)' }}>
+              {escalaFonte}%
+            </span>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '6px' }}>
             <button
               onClick={() => {
                 setAbaAtiva('rotina');
