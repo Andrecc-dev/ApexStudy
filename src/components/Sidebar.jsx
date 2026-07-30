@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { X, Calendar, Target, FileText, RefreshCw, BarChart2, HelpCircle, Moon, Sun, Eye } from 'lucide-react';
 
 export default function Sidebar({
@@ -24,6 +24,12 @@ export default function Sidebar({
 
   const resetarFonte = () => {
     setEscalaFonte(100);
+  };
+
+  // Função criada para corrigir o erro de navegação
+  const navegarPara = (aba) => {
+    setAbaAtiva(aba);
+    onClose();
   };
 
   return (
@@ -68,7 +74,7 @@ export default function Sidebar({
               marginBottom: '24px'
             }}
           >
-            {/* LOGO ADICIONADA AQUI */}
+            {/* LOGO OFICIAL */}
             <img 
               src="/images/LogoOficial.png" 
               alt="ApexStudy" 
@@ -103,183 +109,105 @@ export default function Sidebar({
             Módulos
           </span>
 
-          <button
-            onClick={() => navegarPara('rotina')}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '12px',
-              padding: '10px 12px',
-              borderRadius: '8px',
-              border: 'none',
-              backgroundColor: abaAtiva === 'rotina' ? 'var(--accent-color, #2563eb)' : 'transparent',
-              color: abaAtiva === 'rotina' ? '#fff' : 'var(--text-primary, #cbd5e1)',
-              fontWeight: '500',
-              fontSize: '0.9rem',
-              cursor: 'pointer',
-              textAlign: 'left'
-            }}
-          >
-            <Calendar size={18} /> Rotina de Estudos
-          </button>
-
-          <button
-            onClick={() => navegarPara('questoes')}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '12px',
-              padding: '10px 12px',
-              borderRadius: '8px',
-              border: 'none',
-              backgroundColor: abaAtiva === 'questoes' ? 'var(--accent-color, #2563eb)' : 'transparent',
-              color: abaAtiva === 'questoes' ? '#fff' : 'var(--text-primary, #cbd5e1)',
-              fontWeight: '500',
-              fontSize: '0.9rem',
-              cursor: 'pointer',
-              textAlign: 'left'
-            }}
-          >
-            <Target size={18} /> Banco de Questões
-          </button>
-
-          <button
-            onClick={() => navegarPara('simulados')}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '12px',
-              padding: '10px 12px',
-              borderRadius: '8px',
-              border: 'none',
-              backgroundColor: abaAtiva === 'simulados' ? 'var(--accent-color, #2563eb)' : 'transparent',
-              color: abaAtiva === 'simulados' ? '#fff' : 'var(--text-primary, #cbd5e1)',
-              fontWeight: '500',
-              fontSize: '0.9rem',
-              cursor: 'pointer',
-              textAlign: 'left'
-            }}
-          >
-            <FileText size={18} /> Registro de Simulados
-          </button>
-
-          <button
-            onClick={() => navegarPara('revisoes')}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '12px',
-              padding: '10px 12px',
-              borderRadius: '8px',
-              border: 'none',
-              backgroundColor: abaAtiva === 'revisoes' ? 'var(--accent-color, #2563eb)' : 'transparent',
-              color: abaAtiva === 'revisoes' ? '#fff' : 'var(--text-primary, #cbd5e1)',
-              fontWeight: '500',
-              fontSize: '0.9rem',
-              cursor: 'pointer',
-              textAlign: 'left'
-            }}
-          >
-            <RefreshCw size={18} /> Sistema de Revisões
-          </button>
-
-          {/* NOVO ITEM: GRÁFICOS E DESEMPENHO */}
-          <button
-            onClick={() => navegarPara('graficos')}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '12px',
-              padding: '10px 12px',
-              borderRadius: '8px',
-              border: 'none',
-              backgroundColor: abaAtiva === 'graficos' ? 'var(--accent-color, #2563eb)' : 'transparent',
-              color: abaAtiva === 'graficos' ? '#fff' : 'var(--text-primary, #cbd5e1)',
-              fontWeight: '500',
-              fontSize: '0.9rem',
-              cursor: 'pointer',
-              textAlign: 'left'
-            }}
-          >
-            <BarChart2 size={18} /> Gráficos e Desempenho
-          </button>
-        </div>
-
-        {/* CONTROLE DE TAMANHO DA FONTE */}
-        <div style={{ marginBottom: '12px', paddingTop: '12px', borderTop: '1px solid var(--border-color, #334155)' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-            <span style={{ fontSize: '0.7rem', color: 'var(--text-secondary, #64748b)', textTransform: 'uppercase', letterSpacing: '1px', fontWeight: 'bold' }}>
-              Tamanho do Texto
-            </span>
-            <span style={{ fontSize: '0.75rem', fontWeight: 'bold', color: 'var(--accent-text, #60a5fa)' }}>
-              {escalaFonte}%
-            </span>
-          </div>
-
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '6px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
             <button
-              onClick={() => {
-                setAbaAtiva('rotina');
-                onClose();
-              }}
+              onClick={() => navegarPara('rotina')}
               style={{
                 display: 'flex',
                 alignItems: 'center',
                 gap: '12px',
-                width: '100%',
-                padding: '12px 14px',
+                padding: '10px 12px',
                 borderRadius: '8px',
                 border: 'none',
-                backgroundColor:
-                  abaAtiva === 'rotina'
-                    ? 'var(--accent-color, #2563eb)'
-                    : 'transparent',
-                color:
-                  abaAtiva === 'rotina'
-                    ? 'var(--text-on-accent, #fff)'
-                    : 'var(--text-primary, #e2e8f0)',
-                fontWeight: abaAtiva === 'rotina' ? 'bold' : 'normal',
+                backgroundColor: abaAtiva === 'rotina' ? 'var(--accent-color, #2563eb)' : 'transparent',
+                color: abaAtiva === 'rotina' ? '#fff' : 'var(--text-primary, #cbd5e1)',
+                fontWeight: '500',
                 fontSize: '0.9rem',
                 cursor: 'pointer',
-                textAlign: 'left',
-                transition: 'all 0.2s'
+                textAlign: 'left'
               }}
             >
-              <BookOpen size={18} />
-              Rotina de Estudos
+              <Calendar size={18} /> Rotina de Estudos
             </button>
 
-            {/* 2. Módulo Banco de Questões */}
             <button
-              onClick={() => {
-                setAbaAtiva('questoes');
-                onClose();
-              }}
+              onClick={() => navegarPara('questoes')}
               style={{
                 display: 'flex',
                 alignItems: 'center',
                 gap: '12px',
-                width: '100%',
-                padding: '12px 14px',
+                padding: '10px 12px',
                 borderRadius: '8px',
                 border: 'none',
-                backgroundColor:
-                  abaAtiva === 'questoes'
-                    ? 'var(--accent-color, #2563eb)'
-                    : 'transparent',
-                color:
-                  abaAtiva === 'questoes'
-                    ? 'var(--text-on-accent, #fff)'
-                    : 'var(--text-primary, #e2e8f0)',
-                fontWeight: abaAtiva === 'questoes' ? 'bold' : 'normal',
+                backgroundColor: abaAtiva === 'questoes' ? 'var(--accent-color, #2563eb)' : 'transparent',
+                color: abaAtiva === 'questoes' ? '#fff' : 'var(--text-primary, #cbd5e1)',
+                fontWeight: '500',
                 fontSize: '0.9rem',
                 cursor: 'pointer',
-                textAlign: 'left',
-                transition: 'all 0.2s'
+                textAlign: 'left'
               }}
             >
-              <Target size={18} />
-              Banco de Questões
+              <Target size={18} /> Banco de Questões
+            </button>
+
+            <button
+              onClick={() => navegarPara('simulados')}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px',
+                padding: '10px 12px',
+                borderRadius: '8px',
+                border: 'none',
+                backgroundColor: abaAtiva === 'simulados' ? 'var(--accent-color, #2563eb)' : 'transparent',
+                color: abaAtiva === 'simulados' ? '#fff' : 'var(--text-primary, #cbd5e1)',
+                fontWeight: '500',
+                fontSize: '0.9rem',
+                cursor: 'pointer',
+                textAlign: 'left'
+              }}
+            >
+              <FileText size={18} /> Registro de Simulados
+            </button>
+
+            <button
+              onClick={() => navegarPara('revisoes')}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px',
+                padding: '10px 12px',
+                borderRadius: '8px',
+                border: 'none',
+                backgroundColor: abaAtiva === 'revisoes' ? 'var(--accent-color, #2563eb)' : 'transparent',
+                color: abaAtiva === 'revisoes' ? '#fff' : 'var(--text-primary, #cbd5e1)',
+                fontWeight: '500',
+                fontSize: '0.9rem',
+                cursor: 'pointer',
+                textAlign: 'left'
+              }}
+            >
+              <RefreshCw size={18} /> Sistema de Revisões
+            </button>
+
+            <button
+              onClick={() => navegarPara('graficos')}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px',
+                padding: '10px 12px',
+                borderRadius: '8px',
+                border: 'none',
+                backgroundColor: abaAtiva === 'graficos' ? 'var(--accent-color, #2563eb)' : 'transparent',
+                color: abaAtiva === 'graficos' ? '#fff' : 'var(--text-primary, #cbd5e1)',
+                fontWeight: '500',
+                fontSize: '0.9rem',
+                cursor: 'pointer',
+                textAlign: 'left'
+              }}
+            >
+              <BarChart2 size={18} /> Gráficos e Desempenho
             </button>
           </div>
         </div>
@@ -392,7 +320,6 @@ export default function Sidebar({
             </span>
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '6px' }}>
-              {/* Tema Escuro */}
               <button
                 onClick={() => setTemaAtual('dark')}
                 title="Tema Escuro"
@@ -420,7 +347,6 @@ export default function Sidebar({
                 <Moon size={16} />
               </button>
 
-              {/* Tema Claro */}
               <button
                 onClick={() => setTemaAtual('light')}
                 title="Tema Claro"
@@ -448,7 +374,6 @@ export default function Sidebar({
                 <Sun size={16} />
               </button>
 
-              {/* Alto Contraste */}
               <button
                 onClick={() => setTemaAtual('high-contrast')}
                 title="Alto Contraste"
