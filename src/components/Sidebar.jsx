@@ -1,7 +1,5 @@
-// src/components/Sidebar.jsx
-
 import React, { useState, useEffect } from 'react';
-import { X, Calendar, Target, FileText, HelpCircle, Moon, Sun, Eye } from 'lucide-react';
+import { X, Calendar, Target, FileText, RefreshCw, HelpCircle, Moon, Sun, Eye } from 'lucide-react';
 
 export default function Sidebar({
   isOpen,
@@ -145,7 +143,6 @@ export default function Sidebar({
             <Target size={18} /> Banco de Questões
           </button>
 
-          {/* NOVO ITEM: REGISTRO DE SIMULADOS */}
           <button
             onClick={() => navegarPara('simulados')}
             style={{
@@ -164,6 +161,27 @@ export default function Sidebar({
             }}
           >
             <FileText size={18} /> Registro de Simulados
+          </button>
+
+          {/* NOVO ITEM: SISTEMA DE REVISÕES */}
+          <button
+            onClick={() => navegarPara('revisoes')}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '12px',
+              padding: '10px 12px',
+              borderRadius: '8px',
+              border: 'none',
+              backgroundColor: abaAtiva === 'revisoes' ? 'var(--accent-color, #2563eb)' : 'transparent',
+              color: abaAtiva === 'revisoes' ? '#fff' : 'var(--text-primary, #cbd5e1)',
+              fontWeight: '500',
+              fontSize: '0.9rem',
+              cursor: 'pointer',
+              textAlign: 'left'
+            }}
+          >
+            <RefreshCw size={18} /> Sistema de Revisões
           </button>
         </div>
 
