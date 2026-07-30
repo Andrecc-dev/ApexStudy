@@ -63,21 +63,18 @@ export default function Sidebar({
           <div
             style={{
               display: 'flex',
-              justify: 'space-between',
+              justifyContent: 'space-between',
               alignItems: 'center',
               marginBottom: '24px'
             }}
           >
-            <h2
-              style={{
-                fontSize: '1.2rem',
-                color: 'var(--accent-text, #60a5fa)',
-                margin: 0,
-                fontWeight: 'bold'
-              }}
-            >
-              ApexStudy
-            </h2>
+            {/* LOGO ADICIONADA AQUI */}
+            <img 
+              src="/images/LogoOficial.png" 
+              alt="ApexStudy" 
+              style={{ height: '64px', objectFit: 'contain' }} 
+            />
+            
             <button
               onClick={onClose}
               style={{
@@ -191,7 +188,7 @@ export default function Sidebar({
             <div
               style={{
                 display: 'flex',
-                justify: 'space-between',
+                justifyContent: 'space-between',
                 alignItems: 'center',
                 marginBottom: '8px'
               }}

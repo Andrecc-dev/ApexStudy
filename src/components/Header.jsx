@@ -33,9 +33,13 @@ export default function Header({ onOpenMenu, onOpenTutorial }) {
         >
           <Menu size={24} />
         </button>
-        <h1 style={{ fontSize: '1.1rem', margin: 0, color: 'var(--text-primary, #f8fafc)', fontWeight: 'bold' }}>
-          ApexStudy
-        </h1>
+        
+        {/* LOGO ADICIONADA AQUI SUBSTITUINDO O TEXTO */}
+        <img 
+          src="/images/LogoOficial.png" 
+          alt="ApexStudy" 
+          style={{ height: '55px', objectFit: 'contain' }} 
+        />
       </div>
 
       <button
