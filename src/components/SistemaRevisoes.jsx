@@ -184,21 +184,28 @@ export default function SistemaRevisoes() {
         </form>
       )}
 
-      {/* FILTRO POR MATÉRIA */}
-      <div style={{ display: 'flex', gap: '6px', overflowX: 'auto', paddingBottom: '4px' }}>
+      {/* FILTRO POR MATÉRIA (COM ROLAGEM LATERAL NATIVA) */}
+      <div style={{ 
+        display: 'flex', 
+        gap: '6px', 
+        overflowX: 'auto', 
+        paddingBottom: '8px', /* Aumentei um pouquinho o padding pra barra de rolagem não encostar no botão */
+        WebkitOverflowScrolling: 'touch' /* Deixa o scroll suave no mobile */
+      }}>
         {['Todas', ...MATERIAS_LISTA].map(m => (
           <button 
             key={m} 
             onClick={() => setFiltroMateria(m)} 
             style={{
-              padding: '4px 10px',
-              borderRadius: '6px',
+              flex: '0 0 auto', /* Impede o botão de esmagar, ativando o carrossel */
+              padding: '6px 12px', /* Dei uma leve aumentada no padding pra ficar melhor o toque do dedo */
+              borderRadius: '20px', /* Arredondado igual a rotina de estudos pra manter o padrão visual */
               border: '1px solid #334155',
               backgroundColor: filtroMateria === m ? '#2563eb' : '#0f172a',
               color: filtroMateria === m ? '#fff' : '#94a3b8',
-              fontSize: '0.75rem',
+              fontSize: '0.8rem', /* Padronizei a fonte com a rotina de estudos */
               cursor: 'pointer',
-              whiteSpace: 'nowrap'
+              whiteSpace: 'nowrap' /* Não deixa o texto quebrar de linha */
             }}
           >
             {m}
