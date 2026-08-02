@@ -3,7 +3,7 @@ import { Download, HelpCircle, X } from 'lucide-react';
 
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
-import RotinaEstudos from './components/RotinaEstudos'; // ← NOVO COMPONENTE IMPORTADO AQUI
+import RotinaEstudos from './components/RotinaEstudos';
 import BancoQuestoes from './components/BancoQuestoes';
 import RegistroSimulados from './components/RegistroSimulados';
 import SistemaRevisoes from './components/SistemaRevisoes';

@@ -32,6 +32,55 @@ export default function Sidebar({
     onClose();
   };
 
+  // Função para Exportar (Baixar) os dados
+  const exportarDados = () => {
+    // Puxa tudo que importa do localStorage
+    const dados = {
+      cronograma: localStorage.getItem('apexstudy_cronograma'),
+      revisoes: localStorage.getItem('apexstudy_revisoes'),
+      tema: localStorage.getItem('apexstudy_tema'),
+      fonte: localStorage.getItem('apexstudy_fonte')
+    };
+
+    // Cria o arquivo virtual
+    const blob = new Blob([JSON.stringify(dados)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    
+    // Força o download
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'meu_backup_apexstudy.json';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
+  // Função para Importar (Ler) os dados
+  const importarDados = (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const dados = JSON.parse(e.target.result);
+        
+        // Verifica se o arquivo tem a estrutura correta e salva
+        if (dados.cronograma) localStorage.setItem('apexstudy_cronograma', dados.cronograma);
+        if (dados.revisoes) localStorage.setItem('apexstudy_revisoes', dados.revisoes);
+        if (dados.tema) localStorage.setItem('apexstudy_tema', dados.tema);
+        if (dados.fonte) localStorage.setItem('apexstudy_fonte', dados.fonte);
+
+        alert('✅ Dados recuperados com sucesso! O aplicativo será reiniciado para aplicar as mudanças.');
+        window.location.reload(); // Recarrega a página para atualizar os estados do React
+      } catch (error) {
+        alert('❌ Erro ao ler o arquivo. Certifique-se de que é um backup válido do ApexStudy.');
+      }
+    };
+    reader.readAsText(file);
+  };
+
   return (
     <div
       style={{
@@ -401,6 +450,38 @@ export default function Sidebar({
                 <Eye size={16} />
               </button>
             </div>
+          </div>
+
+          {/* BACKUP DE DADOS */}
+          <div style={{ marginBottom: '16px', padding: '16px', backgroundColor: 'var(--bg-primary, #0f172a)', borderRadius: '8px', border: '1px solid var(--border-color, #334155)' }}>
+            <h4 style={{ margin: '0 0 12px 0', fontSize: '0.75rem', color: 'var(--text-primary, #cbd5e1)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+              💾 Backup de Dados
+            </h4>
+            
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              <button 
+                onClick={exportarDados}
+                style={{ padding: '8px', borderRadius: '6px', backgroundColor: 'var(--bg-card, #1e293b)', color: 'var(--accent-text, #60a5fa)', border: '1px solid var(--accent-color, #2563eb)', cursor: 'pointer', fontWeight: 'bold', fontSize: '0.8rem' }}
+              >
+                Exportar Meus Dados
+              </button>
+
+              <label 
+                style={{ padding: '8px', borderRadius: '6px', backgroundColor: 'var(--bg-card, #1e293b)', color: '#10b981', border: '1px solid #10b981', cursor: 'pointer', fontWeight: 'bold', textAlign: 'center', fontSize: '0.8rem' }}
+              >
+                Importar Backup
+                <input 
+                  type="file" 
+                  accept=".json" 
+                  onChange={importarDados} 
+                  style={{ display: 'none' }} 
+                />
+              </label>
+            </div>
+            
+            <p style={{ fontSize: '0.65rem', color: 'var(--text-secondary, #64748b)', margin: '8px 0 0 0', textAlign: 'center' }}>
+              Exporte seus dados antes de limpar o histórico.
+            </p>
           </div>
 
           {/* Botão de Tutorial */}
