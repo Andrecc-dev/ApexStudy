@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Download, HelpCircle, X } from 'lucide-react';
+import { Download, HelpCircle, X, LogOut } from 'lucide-react';
+import { onAuthStateChanged, signOut } from 'firebase/auth';
+import { auth } from "./config/Firebase"; // Conexão com o Firebase
+import Login from './components/Login';       // Tela de Login
 
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
@@ -20,8 +23,24 @@ const rotinaInicial = {
 };
 
 export default function App() {
+  // --- AUTENTICAÇÃO E SEGURANÇA (FIREBASE) ---
+  const [usuario, setUsuario] = useState(null);
+  const [carregandoAuth, setCarregandoAuth] = useState(true);
 
-  // Estado da Escala da Fonte
+  useEffect(() => {
+    // Escuta em tempo real se o usuário está logado ou não
+    const unsub = onAuthStateChanged(auth, (user) => {
+      setUsuario(user);
+      setCarregandoAuth(false);
+    });
+    return () => unsub();
+  }, []);
+
+  const handleSair = () => {
+    signOut(auth);
+  };
+
+  // --- CONFIGURAÇÕES DE FONTE E TEMA ---
   const [escalaFonte, setEscalaFonte] = useState(() => {
     return Number(localStorage.getItem('apexstudy_fonte')) || 100;
   });
@@ -35,10 +54,7 @@ export default function App() {
   const [isTutorialOpen, setIsTutorialOpen] = useState(false);
   const [abaAtiva, setAbaAtiva] = useState('rotina'); 
 
-  // Gestão de Tema
   const [tema, setTema] = useState(() => localStorage.getItem('apexstudy_tema') || 'dark');
-
-  // CRONOGRAMA: Mantido aqui porque os Gráficos precisam dele!
   const [cronograma, setCronograma] = useState(() => JSON.parse(localStorage.getItem('apexstudy_cronograma')) || rotinaInicial);
 
   const [deferredPrompt, setDeferredPrompt] = useState(null);
@@ -55,7 +71,6 @@ export default function App() {
     return () => window.removeEventListener('beforeinstallprompt', handleBeforeInstall);
   }, []);
 
-  // Salva cronograma quando houver alteração
   useEffect(() => { 
     localStorage.setItem('apexstudy_cronograma', JSON.stringify(cronograma)); 
   }, [cronograma]);
@@ -88,6 +103,21 @@ export default function App() {
 
   const dadosEstudo = gerarDadosGrafico();
 
+  // 1. TELA DE CARREGAMENTO INICIAL
+  if (carregandoAuth) {
+    return (
+      <div style={{ minHeight: '100vh', backgroundColor: '#0f172a', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#60a5fa', fontWeight: 'bold', fontFamily: 'sans-serif' }}>
+        Carregando ApexStudy...
+      </div>
+    );
+  }
+
+  // 2. CADEADO: SE NÃO TIVER LOGADO, MOSTRA APENAS O LOGIN
+  if (!usuario) {
+    return <Login />;
+  }
+
+  // 3. SE TIVER LOGADO, LIBERA O APLICATIVO COMPLETO
   return (
     <div style={{ minHeight: '100vh', backgroundColor: 'var(--bg-primary, #0f172a)', color: 'var(--text-primary, #e2e8f0)', fontFamily: 'sans-serif', transition: 'background-color 0.3s, color 0.3s', display: 'flex', flexDirection: 'column' }}>
       
@@ -107,18 +137,22 @@ export default function App() {
 
       <main style={{ maxWidth: '900px', margin: '0 auto', padding: '16px', width: '100%', boxSizing: 'border-box' }}>
         
-        {/* Banner PWA */}
+        {/* Banner PWA + Botão de Sair (Logout) */}
         <div style={{ backgroundColor: 'var(--accent-color, #2563eb)', color: 'var(--text-on-accent, #fff)', padding: '8px 12px', borderRadius: '8px', marginBottom: '14px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.8rem' }}>
           <span>Quer usar como App no seu Celular/PC?</span>
-          <button onClick={instalarApp} style={{ backgroundColor: 'var(--bg-card, #fff)', color: 'var(--accent-text, #2563eb)', border: 'none', padding: '4px 10px', borderRadius: '6px', fontWeight: 'bold', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}>
-            <Download size={14} /> Instalar
-          </button>
+          <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+            <button onClick={instalarApp} style={{ backgroundColor: 'var(--bg-card, #fff)', color: 'var(--accent-text, #2563eb)', border: 'none', padding: '4px 10px', borderRadius: '6px', fontWeight: 'bold', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <Download size={14} /> Instalar
+            </button>
+            <button onClick={handleSair} title="Sair da Conta" style={{ backgroundColor: 'rgba(239, 68, 68, 0.2)', color: '#fff', border: '1px solid #ef4444', padding: '4px 8px', borderRadius: '6px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.75rem' }}>
+              <LogOut size={13} /> Sair
+            </button>
+          </div>
         </div>
 
         {mostrarAjudaInstalacao && <AjudaInstalacaoModal onClose={() => setMostrarAjudaInstalacao(false)} />}
 
         {/* NAVEGAÇÃO DE ABAS */}
-        
         {abaAtiva === 'rotina' && (
            <RotinaEstudos cronograma={cronograma} setCronograma={setCronograma} />
         )}

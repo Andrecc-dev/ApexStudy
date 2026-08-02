@@ -1,9 +1,6 @@
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import { getAuth } from "firebase/auth";
 
-// Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyCVWPzJ37_barsVpZkk53rzHUY1ffCjpQQ",
   authDomain: "apexstudy-a762a.firebaseapp.com",
@@ -13,5 +10,8 @@ const firebaseConfig = {
   appId: "1:470039488570:web:c861c786b7db94b1772d03"
 };
 
-// Initialize Firebase
+// Inicializa o Firebase
 const app = initializeApp(firebaseConfig);
+
+// AQUI ESTÁ O PONTO CHAVE: a palavra 'export' tem que estar exatamente assim!
+export const auth = getAuth(app);
