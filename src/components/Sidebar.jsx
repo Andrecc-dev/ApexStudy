@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, Calendar, Target, FileText, RefreshCw, BarChart2, HelpCircle, Moon, Sun, Eye } from 'lucide-react';
+import { X, Calendar, Target, FileText, RefreshCw, BarChart2, HelpCircle, Moon, Sun, Eye, LogOut } from 'lucide-react';
 
 export default function Sidebar({
   isOpen,
@@ -10,7 +10,8 @@ export default function Sidebar({
   temaAtual,
   setTemaAtual,
   escalaFonte,
-  setEscalaFonte
+  setEscalaFonte,
+  onSair
 }) {
   if (!isOpen) return null;
 
@@ -26,15 +27,12 @@ export default function Sidebar({
     setEscalaFonte(100);
   };
 
-  // Função criada para corrigir o erro de navegação
   const navegarPara = (aba) => {
     setAbaAtiva(aba);
     onClose();
   };
 
-  // Função para Exportar (Baixar) os dados
   const exportarDados = () => {
-    // Puxa tudo que importa do localStorage
     const dados = {
       cronograma: localStorage.getItem('apexstudy_cronograma'),
       revisoes: localStorage.getItem('apexstudy_revisoes'),
@@ -42,11 +40,9 @@ export default function Sidebar({
       fonte: localStorage.getItem('apexstudy_fonte')
     };
 
-    // Cria o arquivo virtual
     const blob = new Blob([JSON.stringify(dados)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     
-    // Força o download
     const link = document.createElement('a');
     link.href = url;
     link.download = 'meu_backup_apexstudy.json';
@@ -56,7 +52,6 @@ export default function Sidebar({
     URL.revokeObjectURL(url);
   };
 
-  // Função para Importar (Ler) os dados
   const importarDados = (event) => {
     const file = event.target.files[0];
     if (!file) return;
@@ -66,14 +61,13 @@ export default function Sidebar({
       try {
         const dados = JSON.parse(e.target.result);
         
-        // Verifica se o arquivo tem a estrutura correta e salva
         if (dados.cronograma) localStorage.setItem('apexstudy_cronograma', dados.cronograma);
         if (dados.revisoes) localStorage.setItem('apexstudy_revisoes', dados.revisoes);
         if (dados.tema) localStorage.setItem('apexstudy_tema', dados.tema);
         if (dados.fonte) localStorage.setItem('apexstudy_fonte', dados.fonte);
 
         alert('✅ Dados recuperados com sucesso! O aplicativo será reiniciado para aplicar as mudanças.');
-        window.location.reload(); // Recarrega a página para atualizar os estados do React
+        window.location.reload();
       } catch (error) {
         alert('❌ Erro ao ler o arquivo. Certifique-se de que é um backup válido do ApexStudy.');
       }
@@ -503,10 +497,36 @@ export default function Sidebar({
               color: 'var(--accent-text, #2563eb)',
               fontWeight: 'bold',
               fontSize: '0.8rem',
-              cursor: 'pointer'
+              cursor: 'pointer',
+              marginBottom: '8px'
             }}
           >
             <HelpCircle size={16} /> Como usar este módulo?
+          </button>
+
+          {/* BOTÃO DE SAIR DA CONTA */}
+          <button
+            onClick={() => {
+              onClose();
+              if (onSair) onSair();
+            }}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '8px',
+              width: '100%',
+              padding: '10px',
+              borderRadius: '8px',
+              border: '1px solid #ef4444',
+              backgroundColor: '#ef444415',
+              color: '#f87171',
+              fontWeight: 'bold',
+              fontSize: '0.8rem',
+              cursor: 'pointer'
+            }}
+          >
+            <LogOut size={16} /> Sair da Conta
           </button>
 
           {/* Créditos */}

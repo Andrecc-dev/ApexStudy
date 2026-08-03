@@ -133,6 +133,7 @@ export default function App() {
         setTemaAtual={setTema}
         escalaFonte={escalaFonte}
         setEscalaFonte={setEscalaFonte}
+        onSair={handleSair}
       />
 
       <main style={{ maxWidth: '900px', margin: '0 auto', padding: '16px', width: '100%', boxSizing: 'border-box' }}>
